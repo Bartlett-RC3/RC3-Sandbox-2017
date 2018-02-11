@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// 
 /// </summary>
-public class Vertex : MonoBehaviour
+public class EdgeObject : MonoBehaviour
 {
     [SerializeField]
     private int _index;

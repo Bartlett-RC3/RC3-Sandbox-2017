@@ -9,15 +9,22 @@ using UnityEngine;
 public class VertexSelectionHandler : MonoBehaviour, ISelectionHandler
 {
     [SerializeField]
-    VertexSelection _sources;
+    private VertexSelection _sources;
     
     [SerializeField]
-    SelectionMeshes _meshes;
+    private SelectionMeshes _meshes;
 
     [SerializeField]
-    SelectionMaterials _materials;
+    private SelectionMaterials _materials;
 
-    private Vertex _vertex;
+    [SerializeField]
+    private float _defaultScale = 0.1f;
+
+    [SerializeField]
+    private float _selectedScale = 0.2f;
+
+
+    private VertexObject _vertex;
     private MeshFilter _filter;
     private MeshRenderer _renderer;
     private bool _selected;
@@ -37,7 +44,7 @@ public class VertexSelectionHandler : MonoBehaviour, ISelectionHandler
     /// </summary>
     public void Start()
     {
-        _vertex = GetComponent<Vertex>();
+        _vertex = GetComponent<VertexObject>();
         _filter = GetComponent<MeshFilter>();
         _renderer = GetComponent<MeshRenderer>();
         OnDeselected();
@@ -49,8 +56,7 @@ public class VertexSelectionHandler : MonoBehaviour, ISelectionHandler
     /// </summary>
     public void OnDeselected()
     {
-        const float t = 0.5f;
-        transform.localScale = new Vector3(t, t, t);
+        transform.localScale = new Vector3(_defaultScale, _defaultScale, _defaultScale);
 
         _filter.sharedMesh = _meshes.Default;
         _renderer.sharedMaterial = _materials.Default;
@@ -64,8 +70,7 @@ public class VertexSelectionHandler : MonoBehaviour, ISelectionHandler
     /// </summary>
     public void OnSelected()
     {
-        const float t = 1.0f;
-        transform.localScale = new Vector3(t, t, t);
+        transform.localScale = new Vector3(_selectedScale, _selectedScale, _selectedScale);
 
         _filter.sharedMesh = _meshes.Selected;
         _renderer.sharedMaterial = _materials.Selected;

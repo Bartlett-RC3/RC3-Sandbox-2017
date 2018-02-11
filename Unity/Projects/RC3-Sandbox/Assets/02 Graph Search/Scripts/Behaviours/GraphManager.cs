@@ -16,7 +16,7 @@ public class GraphManager : MonoBehaviour
     private VertexSelection _ignored;
 
     [SerializeField]
-    private Vertex _vertexPrefab;
+    private VertexObject _vertexPrefab;
 
     [SerializeField]
     private int _countX = 5;
@@ -28,7 +28,7 @@ public class GraphManager : MonoBehaviour
     private float _depthScale = 0.1f;
     
     private Graph _graph;
-    private Vertex[] _vertices; // vertex objects
+    private VertexObject[] _vertices;
     private int[] _depths;
 
 
@@ -52,7 +52,7 @@ public class GraphManager : MonoBehaviour
     /// </summary>
     private void CreateVertices()
     {
-        _vertices = new Vertex[_graph.VertexCount];
+        _vertices = new VertexObject[_graph.VertexCount];
         int index = 0;
 
         for(int i = 0; i < _countY; i++)

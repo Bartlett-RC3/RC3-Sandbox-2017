@@ -14,7 +14,7 @@ public class VertexMask : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        var v = other.GetComponent<Vertex>();
+        var v = other.GetComponent<VertexObject>();
 
         if (v != null)
             _ignored.Indices.Add(v.Index);
@@ -27,7 +27,7 @@ public class VertexMask : MonoBehaviour
     /// <param name="collision"></param>
     void OnTriggerExit(Collider other)
     {
-        var v = other.GetComponent<Vertex>();
+        var v = other.GetComponent<VertexObject>();
 
         if (v != null)
             _ignored.Indices.Remove(v.Index);
