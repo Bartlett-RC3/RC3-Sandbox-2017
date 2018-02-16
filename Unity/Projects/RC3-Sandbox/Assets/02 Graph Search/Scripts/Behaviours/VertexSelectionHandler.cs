@@ -2,79 +2,82 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Notes
+ */ 
 
-/// <summary>
-/// 
-/// </summary>
-public class VertexSelectionHandler : MonoBehaviour, ISelectionHandler
+namespace RC3.Unity
 {
-    [SerializeField]
-    private VertexSelection _sources;
-    
-    [SerializeField]
-    private SelectionMeshes _meshes;
-
-    [SerializeField]
-    private SelectionMaterials _materials;
-
-    [SerializeField]
-    private float _defaultScale = 0.1f;
-
-    [SerializeField]
-    private float _selectedScale = 0.2f;
-
-
-    private VertexObject _vertex;
-    private MeshFilter _filter;
-    private MeshRenderer _renderer;
-    private bool _selected;
-
-
     /// <summary>
     /// 
     /// </summary>
-    public bool IsSelected
+    public class VertexSelectionHandler : MonoBehaviour, ISelectionHandler
     {
-        get { return _selected; }
-    }
+        [SerializeField] private SharedSelection _sources;
+        [SerializeField] private SharedMeshes _meshes;
+        [SerializeField] private SharedMaterials _materials;
+        [SerializeField] private SharedFloats _scales;
+
+        private VertexObject _vertex;
+        private MeshFilter _filter;
+        private MeshRenderer _renderer;
+        private bool _selected;
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Start()
-    {
-        _vertex = GetComponent<VertexObject>();
-        _filter = GetComponent<MeshFilter>();
-        _renderer = GetComponent<MeshRenderer>();
-        OnDeselected();
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsSelected
+        {
+            get { return _selected; }
+        }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public void OnDeselected()
-    {
-        transform.localScale = new Vector3(_defaultScale, _defaultScale, _defaultScale);
-
-        _filter.sharedMesh = _meshes.Default;
-        _renderer.sharedMaterial = _materials.Default;
-        _sources.Indices.Remove(_vertex.Index);
-        _selected = false;
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Start()
+        {
+            _vertex = GetComponent<VertexObject>();
+            _filter = GetComponent<MeshFilter>();
+            _renderer = GetComponent<MeshRenderer>();
+            OnDeselected();
+        }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public void OnSelected()
-    {
-        transform.localScale = new Vector3(_selectedScale, _selectedScale, _selectedScale);
+        /// <summary>
+        /// 
+        /// </summary>
+        public void OnDeselected()
+        {
+            _sources.Indices.Remove(_vertex.Index);
+            const int index = 0;
 
-        _filter.sharedMesh = _meshes.Selected;
-        _renderer.sharedMaterial = _materials.Selected;
-        _sources.Indices.Add(_vertex.Index);
-        _selected = true;
+            _filter.sharedMesh = _meshes[index];
+            _renderer.sharedMaterial = _materials[index];
+
+            var t = _scales[index];
+            transform.localScale = new Vector3(t, t, t);
+
+            _selected = false;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void OnSelected()
+        {
+            _sources.Indices.Add(_vertex.Index);
+            const int index = 1;
+
+            _filter.sharedMesh = _meshes[index];
+            _renderer.sharedMaterial = _materials[index];
+
+            var t = _scales[index];
+            transform.localScale = new Vector3(t, t, t);
+
+            _selected = true;
+        }
     }
 }

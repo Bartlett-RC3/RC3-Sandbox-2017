@@ -2,34 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VertexMask : MonoBehaviour
+/*
+ * Notes
+ */
+ 
+namespace RC3.Unity
 {
-    [SerializeField]
-    private VertexSelection _ignored;
-
-
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
+    public class VertexMask : MonoBehaviour
     {
-        var v = other.GetComponent<VertexObject>();
+        [SerializeField] private SharedSelection _ignored;
 
-        if (v != null)
-            _ignored.Indices.Add(v.Index);
-    }
-    
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="collision"></param>
-    void OnTriggerExit(Collider other)
-    {
-        var v = other.GetComponent<VertexObject>();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        private void OnTriggerEnter(Collider other)
+        {
+            var v = other.GetComponent<VertexObject>();
 
-        if (v != null)
-            _ignored.Indices.Remove(v.Index);
+            if (v != null)
+                _ignored.Indices.Add(v.Index);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collision"></param>
+        void OnTriggerExit(Collider other)
+        {
+            var v = other.GetComponent<VertexObject>();
+
+            if (v != null)
+                _ignored.Indices.Remove(v.Index);
+        }
     }
 }

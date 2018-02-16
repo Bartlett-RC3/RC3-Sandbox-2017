@@ -199,7 +199,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 68112726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 383.5, y: 164, z: 0}
+  m_LocalPosition: {x: 576, y: 276, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 335833227}
@@ -548,7 +548,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1106876077}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -351.5, y: -132, z: 0}
+  m_LocalPosition: {x: -544, y: -244, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 335833227}
@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 2008488644}
   - component: {fileID: 2008488643}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Graph Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -782,12 +782,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sources: {fileID: 11400000, guid: 9c9ede3d1ebc52a43b078c4e1c00b646, type: 2}
-  _vertexPrefab: {fileID: 114243388821512478, guid: a100d0bf7f0d5944faee28b3ee8532df,
+  _vertexObject: {fileID: 114243388821512478, guid: a100d0bf7f0d5944faee28b3ee8532df,
     type: 2}
-  _edgePrefab: {fileID: 114286166392754828, guid: 9cd97a09847e30440aff5e4496e44980,
+  _edgeObject: {fileID: 114286166392754828, guid: 9cd97a09847e30440aff5e4496e44980,
     type: 2}
-  _countX: 40
-  _countY: 40
+  _trafficScale: 0.02
+  _trafficMax: 12
+  _countX: 10
+  _countY: 10
 --- !u!4 &2008488644
 Transform:
   m_ObjectHideFlags: 0

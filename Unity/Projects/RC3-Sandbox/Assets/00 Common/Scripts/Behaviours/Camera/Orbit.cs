@@ -9,7 +9,7 @@ using UnityEngine;
  * Notes
  */
 
-namespace AppBase
+namespace RC3.Unity
 {
     /// <summary>
     /// 

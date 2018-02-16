@@ -110,9 +110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sources: {fileID: 11400000, guid: 9c9ede3d1ebc52a43b078c4e1c00b646, type: 2}
   _meshes: {fileID: 11400000, guid: 2fdf7f7120cef3144b464fdd770f5297, type: 2}
-  _materials: {fileID: 11400000, guid: 85ede337582335944bd325698e990125, type: 2}
-  _defaultScale: 0.2
-  _selectedScale: 0.4
+  _materials: {fileID: 11400000, guid: a357b502c36634447b1378b4790ab862, type: 2}
+  _scales: {fileID: 11400000, guid: 294e02e7c74a8344984a8d23b860b113, type: 2}
 --- !u!135 &135219646911354704
 SphereCollider:
   m_ObjectHideFlags: 1

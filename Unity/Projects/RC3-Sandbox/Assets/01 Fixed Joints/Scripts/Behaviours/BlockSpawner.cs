@@ -2,94 +2,88 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockSpawner : MonoBehaviour
+/*
+ * Notes
+ */
+
+namespace RC3.Unity
 {
-    [SerializeField]
-    private Transform _blockPrefab;
-
-    [SerializeField]
-    private int _countX = 10;
-
-    [SerializeField]
-    private int _countY = 10;
-
-    [SerializeField]
-    private float _scaleX = 2.0f;
-
-    [SerializeField]
-    private float _scaleY = 2.0f;
-
-    private List<Rigidbody> _blocks;
-
-
     /// <summary>
     /// 
     /// </summary>
-    private void Awake()
+    public class BlockSpawner : MonoBehaviour
     {
-        CreateBlocks();
-        CreateJoints();
-    }
+        [SerializeField] private Transform _blockPrefab;
+        [SerializeField] private float _scaleX = 2.0f;
+        [SerializeField] private float _scaleY = 2.0f;
+        [SerializeField] private int _countX = 10;
+        [SerializeField] private int _countY = 10;
+
+        private List<Rigidbody> _blocks;
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void CreateBlocks()
-    {
-        _blocks = new List<Rigidbody>();
-
-        for (int j = 0; j < _countY; j++)
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Awake()
         {
-            for (int i = 0; i < _countX; i++)
-            {
-                var block = Instantiate(_blockPrefab, transform);
-                block.localPosition = new Vector3(i * _scaleX, 0, j * _scaleY);
+            CreateBlocks();
+            CreateJoints();
+        }
 
-                _blocks.Add(block.GetComponent<Rigidbody>());
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CreateBlocks()
+        {
+            _blocks = new List<Rigidbody>();
+
+            for (int y = 0; y < _countY; y++)
+            {
+                for (int x = 0; x < _countX; x++)
+                {
+                    var block = Instantiate(_blockPrefab, transform);
+                    block.localPosition = new Vector3(x * _scaleX, 0, y * _scaleY);
+
+                    _blocks.Add(block.GetComponent<Rigidbody>());
+                }
             }
         }
-    }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void CreateJoints()
-    {
-        for(int j = 0; j < _countY; j++)
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CreateJoints()
         {
-            for (int i = 0; i < _countX; i++)
+            int index = 0;
+
+            for (int y = 0; y < _countY; y++)
             {
-                var b0 = _blocks[ToIndex(i, j)];
+                for (int x = 0; x < _countX; x++)
+                {
+                    var block = _blocks[index++];
 
-                // -x
-                if (i > 0)
-                    Join(b0, _blocks[ToIndex(i - 1, j)]);
+                    // -x
+                    if (x > 0)
+                        Join(block, _blocks[index - 1]);
 
-                // -y
-                if (j > 0)
-                    Join(b0, _blocks[ToIndex(i, j - 1)]);
+                    // -y
+                    if (y > 0)
+                        Join(block, _blocks[index - _countX]);
+                }
             }
         }
-    }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void Join(Rigidbody body0, Rigidbody body1)
-    {
-        var joint = body0.gameObject.AddComponent<FixedJoint>();
-        joint.connectedBody = body1;
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    private int ToIndex(int x, int y)
-    {
-        return x + y * _countX;
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Join(Rigidbody body0, Rigidbody body1)
+        {
+            var joint = body0.gameObject.AddComponent<FixedJoint>();
+            joint.connectedBody = body1;
+        }
     }
 }

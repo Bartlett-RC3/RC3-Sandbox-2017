@@ -2,39 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Notes
+ */ 
 
-/// <summary>
-/// 
-/// </summary>
-public class InputHandler : MonoBehaviour
+namespace RC3.Unity
 {
-    private Vector3 _gravity;
-
-
     /// <summary>
     /// 
     /// </summary>
-    private void Start()
+    public class InputHandler : MonoBehaviour
     {
-        OnToggleGravity(false);
-    }
-    
+        private Vector3 _gravity;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="value"></param>
-    public void OnToggleGravity(bool value)
-    {
-        if (value)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Start()
         {
-            Physics.gravity = _gravity;
+            OnToggleGravity(false);
         }
-        else
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        public void OnToggleGravity(bool value)
         {
-            _gravity = Physics.gravity;
-            Physics.gravity = Vector3.zero;
+            if (value)
+            {
+                Physics.gravity = _gravity;
+            }
+            else
+            {
+                _gravity = Physics.gravity;
+                Physics.gravity = Vector3.zero;
+            }
         }
     }
-
 }

@@ -1,134 +1,142 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 
-/// </summary>
-public class EdgeGraphManager : MonoBehaviour
+/*
+ * Notes 
+ */
+ 
+namespace RC3.Unity
 {
-    [SerializeField]
-    private VertexSelection _sources;
-
-    [SerializeField]
-    private VertexObject _vertexPrefab;
-
-    [SerializeField]
-    private EdgeObject _edgePrefab;
-
-    [SerializeField]
-    private int _countX = 5;
-
-    [SerializeField]
-    private int _countY = 5;
-
-    private EdgeGraph _graph;
-    private VertexObject[] _vertices;
-    private EdgeObject[] _edges;
-
-    private float[] _vertexDistances;
-    private float[] _edgeLengths;
-    private float[] _edgeScale;
-
     /// <summary>
     /// 
     /// </summary>
-    private void Start()
+    public class EdgeGraphManager : MonoBehaviour
     {
-        _graph = GraphFactory.CreateTriangleGrid(_countX, _countY);
-        CreateVertices();
-        CreateEdges();
+        [SerializeField] private SharedSelection _sources;
+        [SerializeField] private VertexObject _vertexObject;
+        [SerializeField] private EdgeObject _edgeObject;
+        [SerializeField, Range(0.001f, 1.0f)] private float _trafficScale = 1.0f;
+        [SerializeField, Range(0, 100)] private int _trafficMax = 100;
+        [SerializeField] private int _countX = 5;
+        [SerializeField] private int _countY = 5;
 
-        _vertexDistances = new float[_graph.VertexCount];
-        _edgeLengths = new float[_graph.EdgeCount];
-        _edgeScale = new float[_graph.EdgeCount];
-        
-        // initialize edge lengths
-        for(int i = 0; i < _graph.EdgeCount; i++)
+        private EdgeGraph _graph;
+        private VertexObject[] _vertices;
+        private EdgeObject[] _edges;
+
+        private float[] _vertexDistances;
+        private float[] _edgeLengths;
+        private int[] _edgeTraffic;
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Awake()
         {
-            var e = _graph.GetEdge(i);
-            var p0 = _vertices[e.Start].transform.localPosition;
-            var p1 = _vertices[e.End].transform.localPosition;
-            _edgeLengths[i] = Vector3.Distance(p0, p1) + Random.Range(0, 0.001f);
-        }
-    }
+            _graph = EdgeGraph.Factory.CreateTriangleGrid(_countX, _countY);
 
+            // initialize game objects
+            InitVertexObjects();
+            InitEdgeObjects();
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void CreateVertices()
-    {
-        _vertices = new VertexObject[_graph.VertexCount];
-        int index = 0;
+            // initialize additonal attributes
+            _vertexDistances = new float[_graph.VertexCount];
+            _edgeLengths = new float[_graph.EdgeCount];
+            _edgeTraffic = new int[_graph.EdgeCount];
 
-        for (int i = 0; i < _countY; i++)
-        {
-            float dx = (i % 2 == 0) ? 0.0f : 0.5f;
-
-            for (int j = 0; j < _countX; j++)
+            // initialize edge lengths
+            for (int i = 0; i < _graph.EdgeCount; i++)
             {
-                // create vertex
-                var v = Instantiate(_vertexPrefab, transform);
-                v.Index = index;
-
-                // set vertex attributes
-                v.transform.localPosition = new Vector3(j + dx, 0, i);
-
-                // cache it
-                _vertices[index] = v;
-                index++;
+                var e = _graph.GetEdge(i);
+                var p0 = _vertices[e.Start].transform.localPosition;
+                var p1 = _vertices[e.End].transform.localPosition;
+                _edgeLengths[i] = Vector3.Distance(p0, p1) + UnityEngine.Random.Range(0, 0.001f);
             }
         }
-    }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void CreateEdges()
-    {
-        _edges = new EdgeObject[_graph.EdgeCount];
-        int index = 0;
-
-        for(int i = 0; i < _graph.EdgeCount; i++)
+        /// <summary>
+        /// 
+        /// </summary>
+        private void InitVertexObjects()
         {
-            var e = _graph.GetEdge(i);
+            _vertices = new VertexObject[_graph.VertexCount];
+            int index = 0;
 
-            var p0 = _vertices[e.Start].transform.position;
-            var p1 = _vertices[e.End].transform.position;
-            
-            var obj = Instantiate(_edgePrefab, transform);
-            obj.Index = i;
+            for (int i = 0; i < _countY; i++)
+            {
+                float dx = (i % 2 == 0) ? 0.0f : 0.5f;
 
-            var t = obj.transform;
+                for (int j = 0; j < _countX; j++)
+                {
+                    // create vertex
+                    var vObj = Instantiate(_vertexObject, transform);
+                    vObj.Index = index;
 
-            var dir = p1 - p0;
-            var mag = dir.magnitude;
+                    // set position
+                    vObj.transform.localPosition = new Vector3(j + dx, 0, i);
 
-            // scale to edge length
-            t.localScale = new Vector3(0.1f, mag * 0.5f, 0.1f);
-
-            // translate to edge mid point
-            t.localPosition = (p0 + p1) * 0.5f; //Vector3.Lerp(p0, p1, 0.5f);
-
-            // align with edge vector
-            t.localRotation = Quaternion.FromToRotation(t.up, dir);
-
-            // cache it
-            _edges[index] = obj;
-            index++;
+                    // cache it
+                    _vertices[index++] = vObj;
+                }
+            }
         }
-    }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    private void Update()
-    {
-        // calculate distances when key is pressed
-        if(Input.GetKeyDown(KeyCode.Space))
+        /// <summary>
+        /// 
+        /// </summary>
+        private void InitEdgeObjects()
+        {
+            _edges = new EdgeObject[_graph.EdgeCount];
+
+            for (int i = 0; i < _graph.EdgeCount; i++)
+            {
+                var e = _graph.GetEdge(i);
+
+                var p0 = _vertices[e.Start].transform.position;
+                var p1 = _vertices[e.End].transform.position;
+
+                var eObj = Instantiate(_edgeObject, transform);
+                eObj.Index = i;
+
+                var xform = eObj.transform;
+                var dir = p1 - p0;
+                var mag = dir.magnitude;
+
+                // scale to edge length
+                xform.localScale = new Vector3(0.1f, mag * 0.5f, 0.1f);
+
+                // translate to edge mid point
+                xform.localPosition = (p0 + p1) * 0.5f; //Vector3.Lerp(p0, p1, 0.5f);
+
+                // align up with edge direction
+                xform.localRotation = Quaternion.FromToRotation(xform.up, dir);
+
+                // cache it
+                _edges[i] = eObj;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void Update()
+        {
+            // calculate distances when key is pressed
+            if (Input.GetKeyDown(KeyCode.Space))
+                UpdateEdgeTraffic();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateEdgeTraffic()
         {
             GraphUtil.GetVertexDistances(_graph, _edgeLengths, _sources.Indices, _vertexDistances);
 
@@ -138,11 +146,9 @@ public class EdgeGraphManager : MonoBehaviour
                 _vertexDistances[i] *= -1.0f;
             */
 
+            // zero out all edge traffic
             for (int i = 0; i < _edgeLengths.Length; i++)
-                _edgeScale[i] = 0.0f;
-
-            const float maxScale = 1.0f;
-            const float scaleIncr = 0.01f;
+                _edgeTraffic[i] = 0;
 
             // shortes walk from each vertex
             for (int i = 0; i < _graph.VertexCount; i++)
@@ -150,20 +156,17 @@ public class EdgeGraphManager : MonoBehaviour
                 var path = GraphUtil.WalkToMin(_graph, _vertexDistances, i);
 
                 foreach (var ei in path)
-                    _edgeScale[ei] += scaleIncr;
+                    _edgeTraffic[ei]++;
             }
-            
-            // scale cross section of each edge by traffic
+
+            // scale cross section of each edge by amount of traffic
             for (int i = 0; i < _edges.Length; i++)
             {
-                var t = _edges[i].transform;
-
-                var scale = t.localScale;
-                var xz = Mathf.Min(_edgeScale[i], maxScale);
-                t.localScale = new Vector3(xz, scale.y, xz);
+                var xform = _edges[i].transform;
+                var scale = xform.localScale;
+                var xz = Math.Min(_edgeTraffic[i], _trafficMax) * _trafficScale;
+                xform.localScale = new Vector3(xz, scale.y, xz);
             }
         }
     }
-
-
 }

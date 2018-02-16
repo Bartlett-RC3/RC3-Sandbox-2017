@@ -4,44 +4,50 @@ using UnityEngine;
 
 /*
  * Notes
- */ 
+ */
 
-public class ObjectSelector : MonoBehaviour
+namespace RC3.Unity
 {
-    private Camera _camera;
-
-
     /// <summary>
     /// 
     /// </summary>
-    private void Start()
+    public class ObjectSelector : MonoBehaviour
     {
-        _camera = GetComponent<Camera>();
-    }
+        private Camera _camera;
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void Update ()
-    {
-        if (Input.GetMouseButtonDown(0))
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Start()
         {
-            var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                var handler = hit.transform.GetComponent<ISelectionHandler>();
+            _camera = GetComponent<Camera>();
+        }
 
-                if (handler != null)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                var ray = _camera.ScreenPointToRay(Input.mousePosition);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
                 {
-                    if (handler.IsSelected)
-                        handler.OnDeselected();
-                    else
-                        handler.OnSelected();
+                    var handler = hit.transform.GetComponent<ISelectionHandler>();
+
+                    if (handler != null)
+                    {
+                        if (handler.IsSelected)
+                            handler.OnDeselected();
+                        else
+                            handler.OnSelected();
+                    }
                 }
             }
         }
-	}
+    }
 }

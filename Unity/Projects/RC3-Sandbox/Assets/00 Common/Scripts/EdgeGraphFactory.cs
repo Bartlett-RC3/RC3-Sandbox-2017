@@ -5,23 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 /*
- * Notes
- */ 
-
+ * Notes 
+ */
+ 
 namespace RC3
 {
     /// <summary>
     /// 
     /// </summary>
-    public class GraphFactory : GraphFactoryBase<Graph>
+    public class EdgeGraphFactory : GraphFactoryBase<EdgeGraph>
     {
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        protected override Graph Create()
+        protected override EdgeGraph Create()
         {
-            return new Graph();
+            return new EdgeGraph();
         }
     }
 }

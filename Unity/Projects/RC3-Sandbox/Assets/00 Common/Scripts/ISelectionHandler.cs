@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+/*
+ * Notes
+ */ 
 
-/// <summary>
-/// 
-/// </summary>
-interface ISelectionHandler
+namespace RC3
 {
-    bool IsSelected { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    interface ISelectionHandler
+    {
+        bool IsSelected { get; }
 
-    void OnDeselected();
+        void OnDeselected();
 
-    void OnSelected();
+        void OnSelected();
+    }
 }
