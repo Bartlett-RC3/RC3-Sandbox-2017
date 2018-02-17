@@ -64,7 +64,7 @@ namespace RC3
 
 
         /// <summary>
-        /// Adds an edge between v0 and v1
+        /// Adds an edge between the two given vertices.
         /// </summary>
         public void AddEdge(int v0, int v1)
         {

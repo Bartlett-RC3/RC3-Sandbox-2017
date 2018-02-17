@@ -12,7 +12,7 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    public class EdgeGraphManager : MonoBehaviour
+    public class TriangleGridEdgeGraph : MonoBehaviour
     {
         [SerializeField] private SharedSelection _sources;
         [SerializeField] private VertexObject _vertexObject;
@@ -66,18 +66,18 @@ namespace RC3.Unity
             _vertices = new VertexObject[_graph.VertexCount];
             int index = 0;
 
-            for (int i = 0; i < _countY; i++)
+            for (int y = 0; y < _countY; y++)
             {
-                float dx = (i % 2 == 0) ? 0.0f : 0.5f;
+                float dx = (y % 2 == 0) ? 0.0f : 0.5f;
 
-                for (int j = 0; j < _countX; j++)
+                for (int x = 0; x < _countX; x++)
                 {
                     // create vertex
                     var vObj = Instantiate(_vertexObject, transform);
                     vObj.Index = index;
 
                     // set position
-                    vObj.transform.localPosition = new Vector3(j + dx, 0, i);
+                    vObj.transform.localPosition = new Vector3(x + dx, 0, y);
 
                     // cache it
                     _vertices[index++] = vObj;

@@ -13,7 +13,7 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    public class GraphManager : MonoBehaviour
+    public class SquareGraph : MonoBehaviour
     {
         [SerializeField] private SharedSelection _sources;
         [SerializeField] private SharedSelection _ignored;
@@ -46,15 +46,15 @@ namespace RC3.Unity
             _vertices = new VertexObject[_graph.VertexCount];
             int index = 0;
 
-            for (int i = 0; i < _countY; i++)
+            for (int y = 0; y < _countY; y++)
             {
-                for (int j = 0; j < _countX; j++)
+                for (int x = 0; x < _countX; x++)
                 {
                     // create vertex
                     var vObj = Instantiate(_vertexObject, transform);
 
                     // set vertex attributes
-                    vObj.transform.localPosition = new Vector3(j, 0, i);
+                    vObj.transform.localPosition = new Vector3(x, 0, y);
                     vObj.Index = index;
 
                     // cache it

@@ -75,17 +75,17 @@ namespace RC3
 
 
         /// <summary>
-        /// Adds an edge between start and end
+        /// Adds an edge between the two given vertices.
         /// </summary>
-        public void AddEdge(int start, int end)
+        public void AddEdge(int v0, int v1)
         {
             // add index of new edge to vertex lists
             var ei = _edges.Count;
-            _adj[start].Add(ei);
-            _adj[end].Add(ei);
+            _adj[v0].Add(ei);
+            _adj[v1].Add(ei);
 
             // add new edge to edge list
-            _edges.Add(new Edge(start, end));
+            _edges.Add(new Edge(v0, v1));
         }
 
 
