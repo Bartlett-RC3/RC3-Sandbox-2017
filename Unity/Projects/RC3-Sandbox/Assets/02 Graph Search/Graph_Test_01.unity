@@ -199,7 +199,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 68112726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 576, y: 298.5, z: 0}
+  m_LocalPosition: {x: 548.5, y: 344, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 335833227}
@@ -323,11 +323,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sources: {fileID: 11400000, guid: 9c9ede3d1ebc52a43b078c4e1c00b646, type: 2}
   _ignored: {fileID: 11400000, guid: 5985fa32e9a22a148ab4cee9fc10b028, type: 2}
-  _vertexObject: {fileID: 114243388821512478, guid: a100d0bf7f0d5944faee28b3ee8532df,
+  _vertexObject: {fileID: 114557865460753942, guid: a100d0bf7f0d5944faee28b3ee8532df,
     type: 2}
-  _depthScale: 0.5
-  _countX: 20
-  _countY: 20
+  _depthScale: 0.1
+  _countX: 10
+  _countY: 10
 --- !u!4 &271469420
 Transform:
   m_ObjectHideFlags: 0
@@ -560,7 +560,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1106876077}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -544, y: -266.5, z: 0}
+  m_LocalPosition: {x: -516.5, y: -312, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 335833227}

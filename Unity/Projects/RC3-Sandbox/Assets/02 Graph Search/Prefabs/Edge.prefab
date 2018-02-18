@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33585260057458060}
   - component: {fileID: 136420308160598136}
   - component: {fileID: 23164508324728430}
-  - component: {fileID: 114286166392754828}
+  - component: {fileID: 114088280800886428}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1678173685322360}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114286166392754828
+--- !u!114 &114088280800886428
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1678173685322360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58579a92a3db6e4d9b4c22bae6a57d1, type: 3}
+  m_Script: {fileID: 11500000, guid: a6d9285c11f9aca4ebd03829925ecfaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
