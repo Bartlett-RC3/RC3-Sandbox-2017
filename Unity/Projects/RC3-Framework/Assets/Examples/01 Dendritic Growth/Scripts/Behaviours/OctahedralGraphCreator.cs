@@ -28,7 +28,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
         {
             _grid.Initialize(Graph.Factory.CreateTruncatedOctahedronGrid(_countX, _countY, _countZ));
             _grid.VertexObjects.AddRange(CreateVertexObjects());
-
+            
             // center on world origin
             transform.position = new Vector3(-_countX * 0.5f, -_countY * 0.5f, -_countZ * 0.5f);
         }

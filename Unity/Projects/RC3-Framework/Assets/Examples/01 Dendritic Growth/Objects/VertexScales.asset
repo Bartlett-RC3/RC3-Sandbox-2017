@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: VertexScales
   m_EditorClassIdentifier: 
   _items:
-  - 0.05
+  - 0.1
   - 1
   - 1

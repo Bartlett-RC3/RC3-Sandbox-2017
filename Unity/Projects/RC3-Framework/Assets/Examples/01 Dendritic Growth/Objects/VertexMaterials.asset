@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: VertexMaterials
   m_EditorClassIdentifier: 
   _items:
-  - {fileID: 2100000, guid: d3ed0c25d6598f449959e49ecd36f870, type: 2}
+  - {fileID: 2100000, guid: c6095cd84ee599a4ea72a4f805a2cada, type: 2}
   - {fileID: 2100000, guid: 006fcf73960e00545a2d17850117ff26, type: 2}
   - {fileID: 2100000, guid: 716bd045909732b458e4465da7e751c1, type: 2}
