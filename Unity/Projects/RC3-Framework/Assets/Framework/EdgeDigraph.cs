@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 /*
  * Notes 
  */
-
+ 
 namespace RC3
 {
     /// <summary>
-    /// Simple edge list representation of an undirected graph.
+    /// Simple edge list representation of a directed graph.
     /// </summary>
-    public class EdgeGraph: IEdgeGraph
+    public class EdgeDigraph : IEdgeDigraph
     {
         #region Static
 
-        public static readonly EdgeGraphFactory Factory = new EdgeGraphFactory();
+        public static readonly EdgeDigraphFactory Factory = new EdgeDigraphFactory();
         private const int _defaultCapacity = 4;
 
         #endregion
@@ -29,7 +29,7 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        public EdgeGraph(int vertexCapacity = _defaultCapacity, int edgeCapacity = _defaultCapacity)
+        public EdgeDigraph(int vertexCapacity =  _defaultCapacity, int edgeCapacity = _defaultCapacity)
         {
             _vertices = new List<List<int>>(vertexCapacity);
             _edges = new List<int>(edgeCapacity << 1);
@@ -73,13 +73,11 @@ namespace RC3
 
 
         /// <summary>
-        /// Adds an edge between the given vertex.
+        /// Adds an edge from the first given vertex to the second.
         /// </summary>
         public void AddEdge(int v0, int v1)
         {
-            var e = _edges.Count >> 1;
-            _vertices[v0].Add(e);
-            _vertices[v1].Add(e);
+            _vertices[v0].Add(_edges.Count >> 1);
             _edges.Add(v0);
             _edges.Add(v1);
         }
@@ -100,18 +98,6 @@ namespace RC3
         public int GetEndVertex(int edge)
         {
             return _edges[(edge << 1) + 1];
-        }
-
-       
-        /// <summary>
-        /// 
-        /// </summary>
-        public int GetOppositeVertex(int edge, int vertex)
-        {
-            edge <<= 1;
-            var v0 = _edges[edge];
-            var v1 = _edges[edge + 1];
-            return vertex == v0 ? v1 : vertex == v1 ? v0 : -1;
         }
 
 
@@ -138,7 +124,7 @@ namespace RC3
         /// </summary>
         public int GetConnectedVertex(int vertex, int index)
         {
-            return GetOppositeVertex(_vertices[vertex][index], vertex);
+            return GetEndVertex(_vertices[vertex][index]);
         }
 
 
@@ -148,7 +134,7 @@ namespace RC3
         public IEnumerable<int> GetConnectedVertices(int vertex)
         {
             foreach (var e in _vertices[vertex])
-                yield return GetOppositeVertex(e, vertex);
+                yield return GetEndVertex(e);
         }
     }
 }

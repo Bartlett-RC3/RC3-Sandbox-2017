@@ -80,7 +80,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// </summary>
         void ISelectionHandler.OnDeselected()
         {
-            _sources.Indices.Remove(Index);
+            _sources.Indices.Remove(Vertex);
             Status = VertexStatus.Default;
         }
 
@@ -90,7 +90,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// </summary>
         void ISelectionHandler.OnSelected()
         {
-            _sources.Indices.Add(Index);
+            _sources.Indices.Add(Vertex);
             Status = VertexStatus.Source;
         }
 

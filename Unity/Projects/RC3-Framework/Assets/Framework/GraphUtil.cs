@@ -94,11 +94,11 @@ namespace RC3
                 float d0 = result[v0];
 
                 // iterate over edges incident to v0
-                foreach (var ei in graph.GetIncidentEdges(v0))
+                foreach (var e in graph.GetIncidentEdges(v0))
                 {
                     // calculate distance to v1
-                    int v1 = graph.GetEdge(ei).Other(v0);
-                    float d1 = d0 + edgeLengths[ei];
+                    int v1 = graph.GetOppositeVertex(e, v0);
+                    float d1 = d0 + edgeLengths[e];
 
                     // if less than the current distance then update
                     if (d1 < result[v1])
@@ -130,14 +130,14 @@ namespace RC3
                 float dMin = float.MaxValue;
 
                 // find edge to neighbour with smallest distance
-                foreach (var ei in graph.GetIncidentEdges(v0))
+                foreach (var e in graph.GetIncidentEdges(v0))
                 {
-                    var v1 = graph.GetEdge(ei).Other(v0);
+                    var v1 = graph.GetOppositeVertex(e, v0);
                     var d1 = vertexDistances[v1];
 
                     if (d1 < dMin)
                     {
-                        eMin = ei;
+                        eMin = e;
                         dMin = d1;
                     }
                 }
@@ -148,7 +148,7 @@ namespace RC3
                     yield return eMin;
 
                     // update current vertex and distance
-                    v0 = graph.GetEdge(eMin).Other(v0);
+                    v0 = graph.GetOppositeVertex(eMin, v0);
                     d0 = dMin;
                 }
                 else

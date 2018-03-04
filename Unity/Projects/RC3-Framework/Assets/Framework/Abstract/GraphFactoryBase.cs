@@ -39,8 +39,14 @@ namespace RC3
                 for (int x = 0; x < countX; x++)
                 {
                     int i = x + y * countX;
-                    if (x > 0) g.AddEdge(i, i - 1); // x-1
-                    if (y > 0) g.AddEdge(i, i - countX); // y-1
+
+                    // x-1
+                    if (x > 0)
+                        g.AddEdge(i, i - 1);
+
+                    // y-1
+                    if (y > 0)
+                        g.AddEdge(i, i - countX);
                 }
             }
 
@@ -59,6 +65,8 @@ namespace RC3
             var g = Create();
             int n = countX * countY;
 
+            int lastX = countX - 1;
+
             // add vertices
             for (int i = 0; i < n; i++)
                 g.AddVertex();
@@ -69,9 +77,18 @@ namespace RC3
                 for (int x = 0; x < countX; x++)
                 {
                     int i = x + y * countX;
-                    if (x > 0) g.AddEdge(i, i - 1); // x-1
-                    if (y > 0) g.AddEdge(i, i - countX); // y-1
-                    if (y > 0 && x > 0) g.AddEdge(i, i - countX - 1);// y-1, x-1
+
+                    // x-1
+                    if (x > 0)
+                        g.AddEdge(i, i - 1); 
+
+                    // y-1
+                    if (y > 0)
+                        g.AddEdge(i, i - countX); 
+
+                    // y-1, x-1
+                    if (y > 0 && x > 0)
+                        g.AddEdge(i, i - countX - 1);
                 }
             }
 
@@ -81,9 +98,18 @@ namespace RC3
                 for (int x = 0; x < countX; x++)
                 {
                     int i = x + y * countX;
-                    if (x > 0) g.AddEdge(i, i - 1); // x-1
-                    if (y > 0) g.AddEdge(i, i - countX); // y-1
-                    if (y > 0 && x < countX - 1) g.AddEdge(i, i - countX + 1); // y-1, x+1
+
+                    // x-1
+                    if (x > 0)
+                        g.AddEdge(i, i - 1);
+
+                    // y-1
+                    if (y > 0)
+                        g.AddEdge(i, i - countX); 
+
+                    // y-1, x+1
+                    if (y > 0 && x < lastX)
+                        g.AddEdge(i, i - countX + 1);
                 }
             }
 
@@ -104,6 +130,9 @@ namespace RC3
             int countXY = countX * countY;
             int count = countXY * countZ;
 
+            int lastX = countX - 1;
+            int lastY = countY - 1;
+
             // add vertices
             for (int i = 0; i < count; i++)
             {
@@ -121,16 +150,33 @@ namespace RC3
                         int i = x + y * countX + z * countXY;
                         int j = i + count;
 
-                        // primal to primal
-                        if (x > 0) g.AddEdge(i, i - 1); // x-1
-                        if (y > 0) g.AddEdge(i, i - countX); // y-1
-                        if (z > 0) g.AddEdge(i, i - countXY); // z-1
+                        // x-1
+                        if (x > 0)
+                            g.AddEdge(i, i - 1);
 
-                        // dual to dual
-                        if (z > 0) g.AddEdge(i, j - countXY); // z-1
-                        if (x > 0 && z > 0) g.AddEdge(i, j - countXY - 1); // x-1,z-1
-                        if (y > 0 && z > 0) g.AddEdge(i, j - countXY - countX); // y-1,z-1
-                        if (x > 0 && y > 0 && z > 0) g.AddEdge(i, j - countXY - countX - 1); // x-1,y-1,z-1
+                        // y-1
+                        if (y > 0)
+                            g.AddEdge(i, i - countX);
+
+                        // z-1
+                        if (z > 0)
+                            g.AddEdge(i, i - countXY);
+
+                        // z-1
+                        if (z > 0)
+                            g.AddEdge(i, j - countXY);
+
+                        // x-1, z-1
+                        if (x > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - 1);
+
+                        // y-1, z-1
+                        if (y > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - countX);
+
+                        // x-1, y-1, z-1
+                        if (x > 0 && y > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - countX - 1);
                     }
                 }
             }
@@ -144,17 +190,33 @@ namespace RC3
                     {
                         int i = x + y * countX + z * countXY;
                         int j = i + count;
+                        
+                        // x-1
+                        if (x > 0)
+                            g.AddEdge(j, j - 1);
 
-                        // dual to dual
-                        if (x > 0) g.AddEdge(j, j - 1); // x-1
-                        if (y > 0) g.AddEdge(j, j - countX); // y-1
-                        if (z > 0) g.AddEdge(j, j - countXY); // z-1
+                        // y-1
+                        if (y > 0)
+                            g.AddEdge(j, j - countX);
 
-                        // dual to primal
+                        // z-1
+                        if (z > 0)
+                            g.AddEdge(j, j - countXY);
+
+                        //
                         g.AddEdge(j, i);
-                        if (x < countX - 1) g.AddEdge(j, i + 1); // x+1
-                        if (y < countY - 1) g.AddEdge(j, i + countX); // y+1
-                        if (x < countY - 1 && y < countY - 1) g.AddEdge(j, i + countX + 1); // x+1,y+1
+
+                        // x+1
+                        if (x < lastX)
+                            g.AddEdge(j, i + 1);
+
+                        // y+1
+                        if (y < lastY)
+                            g.AddEdge(j, i + countX);
+
+                        // x+1, y+1
+                        if (x < lastX && y < lastY)
+                            g.AddEdge(j, i + countX + 1);
                     }
                 }
             }

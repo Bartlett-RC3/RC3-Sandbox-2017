@@ -13,16 +13,16 @@ namespace RC3.Unity
     /// </summary>
     public class VertexObject : MonoBehaviour
     {
-        [SerializeField] private int _index;
+        [SerializeField] private int _vertex;
 
 
         /// <summary>
-        /// 
+        /// Returns the vertex associated with this object.
         /// </summary>
-        public int Index
+        public int Vertex
         {
-            get { return _index; }
-            set { _index = value; }
+            get { return _vertex; }
+            set { _vertex = value; }
         }
     }
 }

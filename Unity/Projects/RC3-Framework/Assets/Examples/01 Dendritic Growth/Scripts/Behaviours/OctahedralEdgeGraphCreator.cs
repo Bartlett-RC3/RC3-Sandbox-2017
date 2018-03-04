@@ -44,7 +44,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
             {
                 var vObj = Instantiate(_vertexObject, transform);
                 vObj.transform.localPosition = p;
-                vObj.Index = index++;
+                vObj.Vertex = index++;
                 yield return vObj;
             }
         }
@@ -88,13 +88,14 @@ namespace RC3.Unity.Examples.DendriticGrowth
 
             for (int i = 0; i < graph.EdgeCount; i++)
             {
-                var e = graph.GetEdge(i);
+                var v0 = graph.GetStartVertex(i);
+                var v1 = graph.GetEndVertex(i);
 
-                var p0 = verts[e.Start].transform.position;
-                var p1 = verts[e.End].transform.position;
+                var p0 = verts[v0].transform.position;
+                var p1 = verts[v1].transform.position;
 
                 var eObj = Instantiate(_edgeObject, transform);
-                eObj.Index = i;
+                eObj.Edge = i;
 
                 var xform = eObj.transform;
                 var dir = p1 - p0;

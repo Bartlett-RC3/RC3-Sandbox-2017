@@ -45,7 +45,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
             {
                 var vObj = Instantiate(_vertexObject, transform);
                 vObj.transform.localPosition = p;
-                vObj.Index = index++;
+                vObj.Vertex = index++;
                 yield return vObj;
             }
         }

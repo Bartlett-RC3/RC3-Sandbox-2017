@@ -10,13 +10,13 @@ using System.Text;
 namespace RC3
 {
     /// <summary>
-    /// Simple adjacency list representation of an undirected graph.
+    /// Simple adjaceny list representation of a directed graph.
     /// </summary>
-    public class Graph : IGraph
+    public class Digraph : IDigraph
     {
         #region Static
         
-        public static readonly GraphFactory Factory = new GraphFactory();
+        public static readonly DigraphFactory Factory = new DigraphFactory();
         private const int _defaultCapacity = 4;
 
         #endregion
@@ -28,7 +28,7 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        public Graph(int vertexCapacity = _defaultCapacity)
+        public Digraph(int vertexCapacity = _defaultCapacity)
         {
             _vertices = new List<List<int>>(vertexCapacity);
         }
@@ -62,7 +62,7 @@ namespace RC3
 
 
         /// <summary>
-        /// Adds an edge between the given vertices.
+        /// Adds an edge from the first given vertex to the second.
         /// </summary>
         public void AddEdge(int v0, int v1)
         {
@@ -74,9 +74,6 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vertex"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public int GetConnectedVertex(int vertex, int index)
         {
             return _vertices[vertex][index];

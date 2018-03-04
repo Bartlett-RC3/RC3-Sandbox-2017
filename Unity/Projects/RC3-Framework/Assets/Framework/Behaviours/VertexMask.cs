@@ -25,7 +25,7 @@ namespace RC3.Unity
             var v = other.GetComponent<VertexObject>();
 
             if (v != null)
-                _ignored.Indices.Add(v.Index);
+                _ignored.Indices.Add(v.Vertex);
         }
 
 
@@ -38,7 +38,7 @@ namespace RC3.Unity
             var v = other.GetComponent<VertexObject>();
 
             if (v != null)
-                _ignored.Indices.Remove(v.Index);
+                _ignored.Indices.Remove(v.Vertex);
         }
     }
 }

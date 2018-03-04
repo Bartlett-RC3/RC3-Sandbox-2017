@@ -16,20 +16,34 @@ namespace RC3
         /// </summary>
         int EdgeCount { get; }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetStartVertex(int edge);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetEndVertex(int edge);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetOppositeVertex(int edge, int vertex);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetIncidentEdge(int vertex, int index);
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        Edge GetEdge(int index);
-
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vertex"></param>
-        /// <returns></returns>
         IEnumerable<int> GetIncidentEdges(int vertex);
     }
 }

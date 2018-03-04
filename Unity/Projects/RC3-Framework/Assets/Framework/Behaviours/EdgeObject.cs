@@ -13,16 +13,16 @@ namespace RC3.Unity
     /// </summary>
     public class EdgeObject : MonoBehaviour
     {
-        [SerializeField] private int _index;
+        [SerializeField] private int _edge;
 
 
         /// <summary>
-        /// 
+        /// Returns the edge associated with this object.
         /// </summary>
-        public int Index
+        public int Edge
         {
-            get { return _index; }
-            set { _index = value; }
+            get { return _edge; }
+            set { _edge = value; }
         }
     }
 }

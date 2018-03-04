@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+/*
+ * Notes
+ */ 
+
+namespace RC3
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IEdgeDigraph : IDigraph
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        int EdgeCount { get; }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetStartVertex(int edge);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetEndVertex(int edge);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetIncidentEdge(int vertex, int index);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetIncidentEdges(int vertex);
+    }
+}
