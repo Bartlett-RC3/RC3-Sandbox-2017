@@ -22,7 +22,7 @@ namespace RC3
         #endregion
 
 
-        private List<List<int>> _vertices;
+        private List<List<int>> _verts;
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace RC3
         /// </summary>
         public Graph(int vertexCapacity = _defaultCapacity)
         {
-            _vertices = new List<List<int>>(vertexCapacity);
+            _verts = new List<List<int>>(vertexCapacity);
         }
 
 
@@ -39,7 +39,7 @@ namespace RC3
         /// </summary>
         public int VertexCount
         {
-            get { return _vertices.Count; }
+            get { return _verts.Count; }
         }
 
 
@@ -48,16 +48,25 @@ namespace RC3
         /// </summary>
         public int GetDegree(int vertex)
         {
-            return _vertices[vertex].Count;
+            return _verts[vertex].Count;
         }
 
 
         /// <summary>
         /// Adds a new vertex to the graph.
         /// </summary>
+        public void AddVertex()
+        {
+            AddVertex(_defaultCapacity);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void AddVertex(int capacity = _defaultCapacity)
         {
-            _vertices.Add(new List<int>(capacity));
+            _verts.Add(new List<int>(capacity));
         }
 
 
@@ -66,8 +75,8 @@ namespace RC3
         /// </summary>
         public void AddEdge(int v0, int v1)
         {
-            _vertices[v0].Add(v1);
-            _vertices[v1].Add(v0);
+            _verts[v0].Add(v1);
+            _verts[v1].Add(v0);
         }
 
 
@@ -77,18 +86,18 @@ namespace RC3
         /// <param name="vertex"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public int GetConnectedVertex(int vertex, int index)
+        public int GetVertexNeighbor(int vertex, int index)
         {
-            return _vertices[vertex][index];
+            return _verts[vertex][index];
         }
 
 
         /// <summary>
         /// Returns all vertices connected to the given vertex.
         /// </summary>
-        public IEnumerable<int> GetConnectedVertices(int vertex)
+        public IEnumerable<int> GetVertexNeighbors(int vertex)
         {
-            return _vertices[vertex];
+            return _verts[vertex];
         }
     }
 }

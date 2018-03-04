@@ -89,7 +89,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
             if (_queue.Count == 0)
                 return;
             
-            foreach(var vi in _graph.GetConnectedVertices(_queue.Dequeue()))
+            foreach(var vi in _graph.GetVertexNeighbors(_queue.Dequeue()))
             {
                 var v = _vertices[vi];
                 if (v.Status != VertexStatus.Default) continue;
@@ -110,7 +110,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
         {
             int count = 0;
 
-            foreach(var vi in _graph.GetConnectedVertices(vertex))
+            foreach(var vi in _graph.GetVertexNeighbors(vertex))
             {
                 if (_vertices[vi].Status != VertexStatus.Default)
                     count++;

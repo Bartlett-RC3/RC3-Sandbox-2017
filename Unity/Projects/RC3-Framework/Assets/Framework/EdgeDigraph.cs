@@ -22,7 +22,8 @@ namespace RC3
         #endregion
 
 
-        private List<List<int>> _vertices;
+        private List<List<int>> _vertsOut;
+        private List<List<int>> _vertsIn;
         private List<int> _edges;
 
 
@@ -31,7 +32,8 @@ namespace RC3
         /// </summary>
         public EdgeDigraph(int vertexCapacity =  _defaultCapacity, int edgeCapacity = _defaultCapacity)
         {
-            _vertices = new List<List<int>>(vertexCapacity);
+            _vertsOut = new List<List<int>>(vertexCapacity);
+            _vertsIn = new List<List<int>>(vertexCapacity);
             _edges = new List<int>(edgeCapacity << 1);
         }
 
@@ -41,7 +43,7 @@ namespace RC3
         /// </summary>
         public int VertexCount
         {
-            get { return _vertices.Count; }
+            get { return _vertsOut.Count; }
         }
 
 
@@ -55,20 +57,39 @@ namespace RC3
 
 
         /// <summary>
-        /// Returns the degree of the given vertex.
+        /// Returns the number of outgoing edges at the given vertex.
         /// </summary>
-        public int GetDegree(int vertex)
+        public int GetDegreeOut(int vertex)
         {
-            return _vertices[vertex].Count;
+            return _vertsOut[vertex].Count;
+        }
+
+
+        /// <summary>
+        /// Returns the number of incoming edges at the given vertex.
+        /// </summary>
+        public int GetDegreeIn(int vertex)
+        {
+            return _vertsIn[vertex].Count;
         }
 
 
         /// <summary>
         /// Adds a new vertex to the graph.
         /// </summary>
-        public void AddVertex(int capacity = _defaultCapacity)
+        public void AddVertex()
         {
-            _vertices.Add(new List<int>(capacity));
+            AddVertex(_defaultCapacity, _defaultCapacity);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void AddVertex(int capacityOut, int capacityIn)
+        {
+            _vertsOut.Add(new List<int>(capacityOut));
+            _vertsIn.Add(new List<int>(capacityIn));
         }
 
 
@@ -77,7 +98,10 @@ namespace RC3
         /// </summary>
         public void AddEdge(int v0, int v1)
         {
-            _vertices[v0].Add(_edges.Count >> 1);
+            var e = _edges.Count >> 1;
+            _vertsOut[v0].Add(e);
+            _vertsIn[v1].Add(e);
+
             _edges.Add(v0);
             _edges.Add(v1);
         }
@@ -104,37 +128,74 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        public int GetIncidentEdge(int vertex, int index)
+        public int GetOutgoingEdge(int vertex, int index)
         {
-            return _vertices[vertex][index];
+            return _vertsOut[vertex][index];
         }
 
 
         /// <summary>
-        /// Returns all edges incident to the given vertex.
+        /// Returns all edges that start at the given vertex.
         /// </summary>
-        public IEnumerable<int> GetIncidentEdges(int vertex)
+        public IEnumerable<int> GetOutgoingEdges(int vertex)
         {
-            return _vertices[vertex];
+            return _vertsOut[vertex];
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public int GetConnectedVertex(int vertex, int index)
+        public int GetIncomingEdge(int vertex, int index)
         {
-            return GetEndVertex(_vertices[vertex][index]);
+            return _vertsIn[vertex][index];
         }
 
 
         /// <summary>
-        /// Returns all vertices connected to the given vertex.
+        /// Returns all edges that end at the given vertex.
         /// </summary>
-        public IEnumerable<int> GetConnectedVertices(int vertex)
+        public IEnumerable<int> GetIncomingEdges(int vertex)
         {
-            foreach (var e in _vertices[vertex])
+            return _vertsIn[vertex];
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborOut(int vertex, int index)
+        {
+            return GetEndVertex(_vertsOut[vertex][index]);
+        }
+
+
+        /// <summary>
+        /// Returns all vertices that the given vertex connects to.
+        /// </summary>
+        public IEnumerable<int> GetVertexNeighborsOut(int vertex)
+        {
+            foreach (var e in _vertsOut[vertex])
                 yield return GetEndVertex(e);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborIn(int vertex, int index)
+        {
+            return GetStartVertex(_vertsIn[vertex][index]);
+        }
+
+
+        /// <summary>
+        /// Returns all vertices that connect to the given vertex.
+        /// </summary>
+        public IEnumerable<int> GetVertexNeighborsIn(int vertex)
+        {
+            foreach (var e in _vertsIn[vertex])
+                yield return GetStartVertex(e);
         }
     }
 }

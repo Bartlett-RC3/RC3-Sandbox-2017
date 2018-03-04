@@ -36,12 +36,24 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        int GetIncidentEdge(int vertex, int index);
+        int GetOutgoingEdge(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<int> GetIncidentEdges(int vertex);
+        IEnumerable<int> GetOutgoingEdges(int vertex);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetIncomingEdge(int vertex, int index);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetIncomingEdges(int vertex);
     }
 }

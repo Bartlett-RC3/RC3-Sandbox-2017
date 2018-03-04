@@ -22,7 +22,7 @@ namespace RC3
         #endregion
 
 
-        private List<List<int>> _vertices;
+        private List<List<int>> _verts;
         private List<int> _edges;
 
 
@@ -31,7 +31,7 @@ namespace RC3
         /// </summary>
         public EdgeGraph(int vertexCapacity = _defaultCapacity, int edgeCapacity = _defaultCapacity)
         {
-            _vertices = new List<List<int>>(vertexCapacity);
+            _verts = new List<List<int>>(vertexCapacity);
             _edges = new List<int>(edgeCapacity << 1);
         }
 
@@ -41,7 +41,7 @@ namespace RC3
         /// </summary>
         public int VertexCount
         {
-            get { return _vertices.Count; }
+            get { return _verts.Count; }
         }
 
 
@@ -59,16 +59,25 @@ namespace RC3
         /// </summary>
         public int GetDegree(int vertex)
         {
-            return _vertices[vertex].Count;
+            return _verts[vertex].Count;
         }
 
 
         /// <summary>
         /// Adds a new vertex to the graph.
         /// </summary>
+        public void AddVertex()
+        {
+            AddVertex(_defaultCapacity);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void AddVertex(int capacity = _defaultCapacity)
         {
-            _vertices.Add(new List<int>(capacity));
+            _verts.Add(new List<int>(capacity));
         }
 
 
@@ -78,8 +87,9 @@ namespace RC3
         public void AddEdge(int v0, int v1)
         {
             var e = _edges.Count >> 1;
-            _vertices[v0].Add(e);
-            _vertices[v1].Add(e);
+            _verts[v0].Add(e);
+            _verts[v1].Add(e);
+
             _edges.Add(v0);
             _edges.Add(v1);
         }
@@ -120,7 +130,7 @@ namespace RC3
         /// </summary>
         public int GetIncidentEdge(int vertex, int index)
         {
-            return _vertices[vertex][index];
+            return _verts[vertex][index];
         }
 
 
@@ -129,25 +139,25 @@ namespace RC3
         /// </summary>
         public IEnumerable<int> GetIncidentEdges(int vertex)
         {
-            return _vertices[vertex];
+            return _verts[vertex];
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public int GetConnectedVertex(int vertex, int index)
+        public int GetVertexNeighbor(int vertex, int index)
         {
-            return GetOppositeVertex(_vertices[vertex][index], vertex);
+            return GetOppositeVertex(_verts[vertex][index], vertex);
         }
 
 
         /// <summary>
         /// Returns all vertices connected to the given vertex.
         /// </summary>
-        public IEnumerable<int> GetConnectedVertices(int vertex)
+        public IEnumerable<int> GetVertexNeighbors(int vertex)
         {
-            foreach (var e in _vertices[vertex])
+            foreach (var e in _verts[vertex])
                 yield return GetOppositeVertex(e, vertex);
         }
     }

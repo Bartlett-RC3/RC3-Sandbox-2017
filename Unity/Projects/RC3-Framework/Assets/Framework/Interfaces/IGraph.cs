@@ -32,18 +32,18 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        void AddVertex(int capacity = 4);
+        void AddVertex();
 
 
         /// <summary>
         /// 
         /// </summary>
-        int GetConnectedVertex(int vertex, int index);
+        int GetVertexNeighbor(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<int> GetConnectedVertices(int vertex);
+        IEnumerable<int> GetVertexNeighbors(int vertex);
     }
 }

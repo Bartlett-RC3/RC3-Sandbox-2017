@@ -24,7 +24,19 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        int GetDegree(int vertex);
+        int GetDegreeOut(int vertex);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetDegreeIn(int vertex);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void AddVertex();
 
 
         /// <summary>
@@ -36,18 +48,24 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        void AddVertex(int capacity = 4);
+        int GetVertexNeighborOut(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        int GetConnectedVertex(int vertex, int index);
+        IEnumerable<int> GetVertexNeighborsOut(int vertex);
 
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<int> GetConnectedVertices(int vertex);
+        int GetVertexNeighborIn(int vertex, int index);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetVertexNeighborsIn(int vertex);
     }
 }

@@ -121,7 +121,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
             int vertex;
             _queue.RemoveMin(out key, out vertex);
 
-            foreach (var vi in _graph.GetConnectedVertices(vertex))
+            foreach (var vi in _graph.GetVertexNeighbors(vertex))
             {
                 var vobj = _vertices[vi];
 
@@ -141,7 +141,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
         {
             int count = 0;
 
-            foreach(var vi in _graph.GetConnectedVertices(vertex))
+            foreach(var vi in _graph.GetVertexNeighbors(vertex))
             {
                 if (_vertices[vi].Status != VertexStatus.Default)
                     count++;

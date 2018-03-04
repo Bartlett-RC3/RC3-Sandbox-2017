@@ -47,7 +47,7 @@ namespace RC3
                 int d1 = result[v0] + 1; // depth from v0
 
                 // iterate over neighbours of v0
-                foreach (int v1 in graph.GetConnectedVertices(v0))
+                foreach (int v1 in graph.GetVertexNeighbors(v0))
                 {
                     // if d1 is less than the current depth to v1...
                     if (d1 < result[v1])

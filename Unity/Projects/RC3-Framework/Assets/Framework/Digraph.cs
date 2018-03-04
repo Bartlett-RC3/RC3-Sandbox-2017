@@ -22,7 +22,8 @@ namespace RC3
         #endregion
 
 
-        private List<List<int>> _vertices;
+        private List<List<int>> _vertsOut;
+        private List<List<int>> _vertsIn;
 
 
         /// <summary>
@@ -30,7 +31,8 @@ namespace RC3
         /// </summary>
         public Digraph(int vertexCapacity = _defaultCapacity)
         {
-            _vertices = new List<List<int>>(vertexCapacity);
+            _vertsOut = new List<List<int>>(vertexCapacity);
+            _vertsIn = new List<List<int>>(vertexCapacity);
         }
 
 
@@ -39,25 +41,44 @@ namespace RC3
         /// </summary>
         public int VertexCount
         {
-            get { return _vertices.Count; }
+            get { return _vertsOut.Count; }
         }
 
 
         /// <summary>
-        /// Returns the degree of the given vertex.
+        /// Returns the number of vertices that the given vertex connects to.
         /// </summary>
-        public int GetDegree(int vertex)
+        public int GetDegreeOut(int vertex)
         {
-            return _vertices[vertex].Count;
+            return _vertsOut[vertex].Count;
+        }
+
+
+        /// <summary>
+        /// Returns the the number of vertices that connect to the given vertex.
+        /// </summary>
+        public int GetDegreeIn(int vertex)
+        {
+            return _vertsIn[vertex].Count;
         }
 
 
         /// <summary>
         /// Adds a new vertex to the graph.
         /// </summary>
-        public void AddVertex(int capacity = _defaultCapacity)
+        public void AddVertex()
         {
-            _vertices.Add(new List<int>(capacity));
+            AddVertex(_defaultCapacity, _defaultCapacity);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void AddVertex(int capacityOut, int capacityIn)
+        {
+            _vertsOut.Add(new List<int>(capacityOut));
+            _vertsIn.Add(new List<int>(capacityIn));
         }
 
 
@@ -66,26 +87,44 @@ namespace RC3
         /// </summary>
         public void AddEdge(int v0, int v1)
         {
-            _vertices[v0].Add(v1);
-            _vertices[v1].Add(v0);
+            _vertsOut[v0].Add(v1);
+            _vertsIn[v1].Add(v0);
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public int GetConnectedVertex(int vertex, int index)
+        public int GetVertexNeighborOut(int vertex, int index)
         {
-            return _vertices[vertex][index];
+            return _vertsOut[vertex][index];
         }
 
 
         /// <summary>
-        /// Returns all vertices connected to the given vertex.
+        /// Returns all vertices that the given vertex connects to.
         /// </summary>
-        public IEnumerable<int> GetConnectedVertices(int vertex)
+        public IEnumerable<int> GetVertexNeighborsOut(int vertex)
         {
-            return _vertices[vertex];
+            return _vertsOut[vertex];
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborIn(int vertex, int index)
+        {
+            return _vertsIn[vertex][index];
+        }
+
+
+        /// <summary>
+        /// Returns all vertices that connect to the given vertex.
+        /// </summary>
+        public IEnumerable<int> GetVertexNeighborsIn(int vertex)
+        {
+            return _vertsIn[vertex];
         }
     }
 }
