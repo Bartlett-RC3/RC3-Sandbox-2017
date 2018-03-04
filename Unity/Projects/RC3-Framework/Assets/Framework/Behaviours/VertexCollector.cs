@@ -11,9 +11,9 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    public class VertexMask : MonoBehaviour
+    public class VertexCollector : MonoBehaviour
     {
-        [SerializeField] private SharedSelection _ignored;
+        [SerializeField] private SharedSelection _selection;
 
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace RC3.Unity
             var v = other.GetComponent<VertexObject>();
 
             if (v != null)
-                _ignored.Indices.Add(v.Vertex);
+                _selection.Indices.Add(v.Vertex);
         }
 
 
@@ -38,7 +38,7 @@ namespace RC3.Unity
             var v = other.GetComponent<VertexObject>();
 
             if (v != null)
-                _ignored.Indices.Remove(v.Vertex);
+                _selection.Indices.Remove(v.Vertex);
         }
     }
 }

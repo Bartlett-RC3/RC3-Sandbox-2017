@@ -405,6 +405,86 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &800806184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 800806186}
+  - component: {fileID: 800806185}
+  - component: {fileID: 800806187}
+  - component: {fileID: 800806188}
+  m_Layer: 0
+  m_Name: Game Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &800806185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 800806184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d373846dc524d4ca7d619b64258b17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sharedGraph: {fileID: 11400000, guid: 05025e1ac89ee1f4d956d3982c52fbb2, type: 2}
+  _vertexObject: {fileID: 114316205542303414, guid: c761e7b380deb3b44852fd5eeb57bc67,
+    type: 2}
+  _edgeObject: {fileID: 114536816472777028, guid: efebc467999df964980e4ff00747afff,
+    type: 2}
+  _countX: 16
+  _countY: 8
+  _countZ: 16
+--- !u!4 &800806186
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 800806184}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &800806187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 800806184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd5f2efb02f34d4cb1311405b5d49a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sources: {fileID: 11400000, guid: ae1277afabf384c4481f92beb11746e1, type: 2}
+  _sharedGraph: {fileID: 11400000, guid: 05025e1ac89ee1f4d956d3982c52fbb2, type: 2}
+  _weightMapper: {fileID: 11400000, guid: 76ff495a1c083b943bc65580ff6e6c1c, type: 2}
+  _reinforceRate: 0.002
+--- !u!114 &800806188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 800806184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b793cbb46612beb46821fcce2c35b099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _folder: Assets/Examples/02 Reinforced Walks/Screen Captures/
+  _format: frame_{0:D3}.png
+  _key: 115
+  _superSize: 1
 --- !u!1 &1106876077
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,11 +557,13 @@ MonoBehaviour:
     m_LineSpacing: 1.5
   m_Text: '---
 
-    Spacebar: Start growth
-
-    P: Screen capture
+    R: Reinforce
 
     C: Clear sources
+
+    W: Reset Weights
+
+    S: Screen Capture
 
     ---
 
@@ -720,79 +802,3 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1572899590}
---- !u!1 &2008488642
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2008488644}
-  - component: {fileID: 2008488643}
-  - component: {fileID: 2008488645}
-  - component: {fileID: 2008488646}
-  m_Layer: 0
-  m_Name: Game Controller
-  m_TagString: GameController
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2008488643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2008488642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d818bf5c38de5141ba6cf23d9489c76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grid: {fileID: 11400000, guid: f56ee9de8d7c0d8479b5bdf0bc02968a, type: 2}
-  _vertexObject: {fileID: 114961029533568012, guid: 44a695aafe0c23540ad997fb0cd6ebea,
-    type: 2}
-  _countX: 12
-  _countY: 1
-  _countZ: 12
---- !u!4 &2008488644
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2008488642}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2008488645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2008488642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed8881be0cdd06b479a1238f9adbf05c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sources: {fileID: 11400000, guid: 8454b97e8854eba4d9a868121b5b1166, type: 2}
-  _grid: {fileID: 11400000, guid: f56ee9de8d7c0d8479b5bdf0bc02968a, type: 2}
---- !u!114 &2008488646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2008488642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b793cbb46612beb46821fcce2c35b099, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _folder: Assets/Examples/01 Dendritic Growth/Screen Captures/
-  _format: frame_{0:D3}.png
-  _key: 112
-  _superSize: 1

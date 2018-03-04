@@ -17,7 +17,7 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        public static void GetVertexDepths(Graph graph, IEnumerable<int> sources, int[] result, IEnumerable<int> ignore = null)
+        public static void GetVertexDepths(IGraph graph, IEnumerable<int> sources, int[] result, IEnumerable<int> ignore = null)
         {
             // initialize depths
             for (int i = 0; i < graph.VertexCount; i++)
@@ -64,7 +64,7 @@ namespace RC3
         /// <summary>
         /// 
         /// </summary>
-        public static void GetVertexDistances(EdgeGraph graph, float[] edgeLengths, IEnumerable<int> sources, float[] result, IEnumerable<int> ignore = null)
+        public static void GetVertexDistances(IEdgeGraph graph, float[] edgeLengths, IEnumerable<int> sources, float[] result, IEnumerable<int> ignore = null)
         {
             // initialize depths
             for (int i = 0; i < graph.VertexCount; i++)
@@ -118,7 +118,7 @@ namespace RC3
         /// <param name="vertexDistances"></param>
         /// <param name="startVertex"></param>
         /// <returns></returns>
-        public static IEnumerable<int> WalkToMin(EdgeGraph graph, float[] vertexDistances, int startVertex)
+        public static IEnumerable<int> WalkToMin(IEdgeGraph graph, float[] vertexDistances, int startVertex)
         {
             int v0 = startVertex;
             float d0 = vertexDistances[v0];
@@ -126,8 +126,8 @@ namespace RC3
             while (true)
             {
                 // edge to lowest neighbour
-                int eMin = -1;
-                float dMin = float.MaxValue;
+                int emin = -1;
+                float dmin = float.MaxValue;
 
                 // find edge to neighbour with smallest distance
                 foreach (var e in graph.GetIncidentEdges(v0))
@@ -135,21 +135,69 @@ namespace RC3
                     var v1 = graph.GetOppositeVertex(e, v0);
                     var d1 = vertexDistances[v1];
 
-                    if (d1 < dMin)
+                    if (d1 < dmin)
                     {
-                        eMin = e;
-                        dMin = d1;
+                        emin = e;
+                        dmin = d1;
                     }
                 }
 
                 // if less than current distance, take a step
-                if (dMin < d0)
+                if (dmin < d0)
                 {
-                    yield return eMin;
+                    yield return emin;
 
                     // update current vertex and distance
-                    v0 = graph.GetOppositeVertex(eMin, v0);
-                    d0 = dMin;
+                    v0 = graph.GetOppositeVertex(emin, v0);
+                    d0 = dmin;
+                }
+                else
+                {
+                    yield break;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="vertexDistances"></param>
+        /// <param name="startVertex"></param>
+        /// <returns></returns>
+        public static IEnumerable<int> WalkToMax(IEdgeGraph graph, float[] vertexDistances, int startVertex)
+        {
+            int v0 = startVertex;
+            float d0 = vertexDistances[v0];
+
+            while (true)
+            {
+                // edge to lowest neighbour
+                int emax = -1;
+                float dmax = float.MinValue;
+
+                // find edge to neighbour with smallest distance
+                foreach (var e in graph.GetIncidentEdges(v0))
+                {
+                    var v1 = graph.GetOppositeVertex(e, v0);
+                    var d1 = vertexDistances[v1];
+
+                    if (d1 > dmax)
+                    {
+                        emax = e;
+                        dmax = d1;
+                    }
+                }
+
+                // if greater than current distance, take a step
+                if (dmax > d0)
+                {
+                    yield return emax;
+
+                    // update current vertex and distance
+                    v0 = graph.GetOppositeVertex(emax, v0);
+                    d0 = dmax;
                 }
                 else
                 {

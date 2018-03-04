@@ -200,16 +200,16 @@ namespace RC3
                             g.AddEdge(i, i - countXY);
 
                         // x+1
-                        if (x > 0)
-                            g.AddEdge(i, i - 1);
+                        if (x < lastX)
+                            g.AddEdge(i, i + 1);
 
                         // y+1
-                        if (y > 0)
-                            g.AddEdge(i, i - countX);
+                        if (y < lastY)
+                            g.AddEdge(i, i + countX);
 
                         // z+1
-                        if (z > 0)
-                            g.AddEdge(i, i - countXY);
+                        if (z < lastZ)
+                            g.AddEdge(i, i + countXY);
 
                         //
                         g.AddEdge(i, j);
@@ -268,16 +268,16 @@ namespace RC3
                             g.AddEdge(j, j - countXY);
 
                         // x+1
-                        if (x > 0)
-                            g.AddEdge(j, j - 1);
+                        if (x < lastX)
+                            g.AddEdge(j, j + 1);
 
                         // y+1
-                        if (y > 0)
-                            g.AddEdge(j, j - countX);
+                        if (y < lastY)
+                            g.AddEdge(j, j + countX);
 
                         // z+1
-                        if (z > 0)
-                            g.AddEdge(j, j - countXY);
+                        if (z < lastZ)
+                            g.AddEdge(j, j + countXY);
 
                         // x+1, y+1, z+1
                         if (x < lastX && y < lastY && z < lastZ)

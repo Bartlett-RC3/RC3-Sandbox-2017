@@ -7,14 +7,14 @@ using UnityEngine;
  * Notes 
  */
 
-namespace RC3.Unity.Examples.DendriticGrowth
+namespace RC3.Unity.Examples.ReinforcedWalks
 {
     /// <summary>
     /// 
     /// </summary>
-    public class OctahedralEdgeGraphCreator : MonoBehaviour
+    public class OctahedralEdgeDigraphCreator : MonoBehaviour
     {
-        [SerializeField] private SharedEdgeGraph _grid;
+        [SerializeField] private SharedEdgeDigraph _sharedGraph;
         [SerializeField] private VertexObject _vertexObject;
         [SerializeField] private EdgeObject _edgeObject;
         [SerializeField] private int _countX = 5;
@@ -27,9 +27,12 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// </summary>
         private void Awake()
         {
-            _grid.Initialize(EdgeGraph.Factory.CreateTruncatedOctahedronGrid(_countX, _countY, _countZ));
-            _grid.VertexObjects.AddRange(CreateVertexObjects());
-            _grid.EdgeObjects.AddRange(CreateEdgeObjects());
+            _sharedGraph.Initialize(EdgeDigraph.Factory.CreateTruncatedOctahedronGrid(_countX, _countY, _countZ));
+            _sharedGraph.VertexObjects.AddRange(CreateVertexObjects());
+            _sharedGraph.EdgeObjects.AddRange(CreateEdgeObjects());
+
+            // center on world origin
+            transform.position = new Vector3(-_countX * 0.5f, -_countY * 0.5f, -_countZ * 0.5f);
         }
 
 
@@ -83,16 +86,16 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// </summary>
         private IEnumerable<EdgeObject> CreateEdgeObjects()
         {
-            var graph = _grid.Graph;
-            var verts = _grid.VertexObjects;
+            var graph = _sharedGraph.Graph;
+            var verts = _sharedGraph.VertexObjects;
 
             for (int i = 0; i < graph.EdgeCount; i++)
             {
                 var v0 = graph.GetStartVertex(i);
                 var v1 = graph.GetEndVertex(i);
 
-                var p0 = verts[v0].transform.position;
-                var p1 = verts[v1].transform.position;
+                var p0 = verts[v0].transform.localPosition;
+                var p1 = verts[v1].transform.localPosition;
 
                 var eObj = Instantiate(_edgeObject, transform);
                 eObj.Edge = i;
@@ -102,13 +105,13 @@ namespace RC3.Unity.Examples.DendriticGrowth
                 var mag = dir.magnitude;
 
                 // scale to edge length
-                xform.localScale = new Vector3(0.1f, mag * 0.5f, 0.1f);
-
-                // translate to edge mid point
-                xform.localPosition = (p0 + p1) * 0.5f;
+                xform.localScale = new Vector3(1.0f, mag * 0.20f, 1.0f);
 
                 // align up with edge direction
                 xform.localRotation = Quaternion.FromToRotation(xform.up, dir);
+
+                // translate to edge start
+                xform.localPosition = p0;
 
                 yield return eObj;
             }

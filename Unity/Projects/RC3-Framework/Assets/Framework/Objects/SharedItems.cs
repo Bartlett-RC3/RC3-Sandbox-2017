@@ -36,4 +36,25 @@ namespace RC3.Unity
             get { return _items.Length; }
         }
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [CreateAssetMenu(menuName = "Objects/SharedItems/Meshes")]
+    public class SharedMeshes : SharedItems<Mesh> { }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [CreateAssetMenu(menuName = "Objects/SharedItems/Materials")]
+    public class SharedMaterials : SharedItems<Material> { }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [CreateAssetMenu(menuName = "Objects/SharedItems/Floats")]
+    public class SharedFloats : SharedItems<float> { }
 }

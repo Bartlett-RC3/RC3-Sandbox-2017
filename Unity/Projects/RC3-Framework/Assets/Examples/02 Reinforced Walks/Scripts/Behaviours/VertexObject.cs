@@ -6,21 +6,26 @@ using UnityEngine;
  * Notes
  */
  
-namespace RC3.Unity.Examples.DendriticGrowth
+namespace RC3.Unity.Examples.ReinforcedWalks
 {
     /// <summary>
     /// 
     /// </summary>
     public class VertexObject : RC3.Unity.VertexObject, ISelectionHandler
     {
-        [SerializeField] private SharedSelection _sources;
-        [SerializeField] private SharedMeshes _meshes;
-        [SerializeField] private SharedMaterials _materials;
-        [SerializeField] private SharedFloats _scales;
+        #region Static
+        
+        private const float _minScale = 0.05f;
 
-        private MeshFilter _filter;
+        #endregion
+
+
+        [SerializeField] private SharedSelection _sources;
+        [SerializeField] private SharedMaterials _materials;
+        
         private MeshRenderer _renderer;
         private VertexStatus _status;
+        private float _scale;
 
 
         /// <summary>
@@ -40,15 +45,33 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// <summary>
         /// 
         /// </summary>
+        public float Scale
+        {
+            get { return _scale; }
+            set
+            {
+                _scale = Mathf.Max(value, _minScale);
+                OnSetScale();
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void OnSetStatus()
         {
-            int index = (int)_status;
+            _renderer.sharedMaterial = _materials[(int)_status];
 
-            _filter.sharedMesh = _meshes[index];
-            _renderer.sharedMaterial = _materials[index];
+        }
 
-            var t = _scales[index];
-            transform.localScale = new Vector3(t, t, t);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void OnSetScale()
+        {
+            transform.localScale = new Vector3(_scale, _scale, _scale);
         }
 
 
@@ -57,7 +80,6 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// </summary>
         private void Start()
         {
-            _filter = GetComponent<MeshFilter>();
             _renderer = GetComponent<MeshRenderer>();
             Status = VertexStatus.Default; // default vertex state
         }
