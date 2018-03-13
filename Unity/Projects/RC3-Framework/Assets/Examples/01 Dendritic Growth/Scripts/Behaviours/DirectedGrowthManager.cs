@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using SpatialSlur.SlurData;
+using RC3.Graphs;
 
 /*
  * Notes

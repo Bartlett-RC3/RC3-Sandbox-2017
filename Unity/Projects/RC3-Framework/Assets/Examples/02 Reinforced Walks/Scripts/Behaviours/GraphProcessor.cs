@@ -1,10 +1,11 @@
-﻿using System;
+﻿//using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using SpatialSlur.SlurCore;
+using RC3.Graphs;
 
 /*
  * Notes
@@ -52,6 +53,8 @@ namespace RC3.Unity.Examples.ReinforcedWalks
         /// </summary>
         private void ResetWeights()
         {
+            //_weights.Set(1.0f);
+
             /*
             for(int i = 0; i < _graph.EdgeCount; i++)
             {
@@ -65,7 +68,9 @@ namespace RC3.Unity.Examples.ReinforcedWalks
             }
             */
 
-            _weights.Set(1.0f);
+            for (int i = 0; i < _weights.Length; i++)
+                _weights[i] = Random.Range(1.0f, 1.001f);
+
             UpdateGraphElements();
         }
 
