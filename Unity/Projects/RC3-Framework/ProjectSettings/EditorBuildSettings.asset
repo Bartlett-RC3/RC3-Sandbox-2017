@@ -4,4 +4,19 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Examples/01 Dendritic Growth/Dendritic_Growth_01.unity
+    guid: b2659197ea61752408bece71c119a76b
+  - enabled: 1
+    path: Assets/Examples/01 Dendritic Growth/Dendritic_Growth_02.unity
+    guid: 6817f45d4e4af10499c423b1c925cb16
+  - enabled: 1
+    path: Assets/Examples/02 Reinforced Walks/Reinforced_Walks_01.unity
+    guid: a6bb788a65bf40c4389b65f0ddf2e66a
+  - enabled: 1
+    path: Assets/Examples/03 Graph Growth/Graph_Growth_01.unity
+    guid: bfd8ba7827a83624f95e96ad55e13ad1
+  - enabled: 1
+    path: Assets/Examples/04 Territorial Agents (WIP)/Territorial_Agents_01.unity
+    guid: 47791583f83f0a24d9ec5bf7d06bee63

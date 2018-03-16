@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1031102297564476}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 478.65912, y: 371.81778, z: 383.29138}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -95,11 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1768fcb9c772ef4b8fbd1626aef4a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 0
+  _vertex: 0
   _sources: {fileID: 11400000, guid: 8454b97e8854eba4d9a868121b5b1166, type: 2}
-  _meshes: {fileID: 11400000, guid: e4e08d9894fd9184bbb29ae7bf7ae006, type: 2}
-  _materials: {fileID: 11400000, guid: 8542579603f26b347b730cedbcccbf9e, type: 2}
-  _scales: {fileID: 11400000, guid: eff75d3a2a45af947a941263c44c1ff1, type: 2}
+  _meshes: {fileID: 11400000, guid: 47c40ba47d7b152499b4ab85c510a592, type: 2}
+  _materials: {fileID: 11400000, guid: 5bf12a79879e05041b47422be60e24ef, type: 2}
+  _scales: {fileID: 11400000, guid: 4b7ee611183f91d459b4a89350bc79b6, type: 2}
 --- !u!135 &135219646911354704
 SphereCollider:
   m_ObjectHideFlags: 1
