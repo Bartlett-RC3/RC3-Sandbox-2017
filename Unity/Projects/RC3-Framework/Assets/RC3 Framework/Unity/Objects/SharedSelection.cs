@@ -11,7 +11,7 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/SharedSelection")]
+    [CreateAssetMenu(menuName = "RC3/Framework/Shared/Selection")]
     public class SharedSelection : ScriptableObject
     {
         private HashSet<int> _indices;

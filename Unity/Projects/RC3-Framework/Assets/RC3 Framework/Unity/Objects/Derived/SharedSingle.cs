@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /*
  * Notes
@@ -11,6 +12,6 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Color")]
-    public class SharedColor : Shared<Color> { }
+    [CreateAssetMenu(menuName = "RC3/Framework/Shared/Single")]
+    public class SharedSingle : Shared<float> { }
 }

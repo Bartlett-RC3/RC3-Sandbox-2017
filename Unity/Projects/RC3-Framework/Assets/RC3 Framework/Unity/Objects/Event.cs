@@ -16,7 +16,7 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Event")]
+    [CreateAssetMenu(menuName = "RC3/Framework/Event")]
     public class Event : ScriptableObject
     {
         private List<EventListener> _listeners = new List<EventListener>();

@@ -11,7 +11,7 @@ namespace RC3.Unity.Examples.TerritorialAgents
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/TerritorialAgents/SharedEdgeGraph")]
+    [CreateAssetMenu(menuName = "RC3/Examples/TerritorialAgents/SharedEdgeGraph")]
     public class SharedEdgeGraph : SharedEdgeGraph<VertexObject, EdgeObject>
     {
     }

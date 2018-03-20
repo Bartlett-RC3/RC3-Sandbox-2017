@@ -11,7 +11,7 @@ namespace RC3.Unity.Examples.GraphGrowth
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/GraphGrowth/SharedEdgeGraph")]
+    [CreateAssetMenu(menuName = "RC3/Examples/GraphGrowth/SharedEdgeGraph")]
     public class SharedEdgeGraph : SharedEdgeGraph<VertexObject, EdgeObject>
     {
     }

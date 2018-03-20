@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /*
  * Notes
@@ -11,6 +12,6 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/String")]
-    public class SharedString : Shared<string> { }
+    [CreateAssetMenu(menuName = "RC3/Framework/Shared/Int32")]
+    public class SharedInt32 : Shared<int> { }
 }

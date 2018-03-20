@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d818bf5c38de5141ba6cf23d9489c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grid: {fileID: 11400000, guid: f56ee9de8d7c0d8479b5bdf0bc02968a, type: 2}
+  _sharedGraph: {fileID: 11400000, guid: f56ee9de8d7c0d8479b5bdf0bc02968a, type: 2}
   _vertexObject: {fileID: 114961029533568012, guid: 44a695aafe0c23540ad997fb0cd6ebea,
     type: 2}
   _countX: 12
@@ -781,7 +781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8881be0cdd06b479a1238f9adbf05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sources: {fileID: 11400000, guid: 8454b97e8854eba4d9a868121b5b1166, type: 2}
+  _sources: {fileID: 11400000, guid: b0b66fd6c4abeb84d8c5c4017ab3c56f, type: 2}
   _grid: {fileID: 11400000, guid: f56ee9de8d7c0d8479b5bdf0bc02968a, type: 2}
 --- !u!114 &2008488646
 MonoBehaviour:

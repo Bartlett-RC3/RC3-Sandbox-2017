@@ -11,6 +11,6 @@ namespace RC3.Unity.Examples.ReinforcedWalks
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/ReinforcedWalks/SharedEdgeDigraph")]
+    [CreateAssetMenu(menuName = "RC3/Examples/ReinforcedWalks/SharedEdgeDigraph")]
     public class SharedEdgeDigraph : SharedEdgeDigraph<VertexObject, EdgeObject> { }
 }

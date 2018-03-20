@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
  * Notes
@@ -12,6 +11,6 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Single")]
-    public class SharedSingle : Shared<Single> { }
+    [CreateAssetMenu(menuName = "RC3/Framework/Shared/Vector3")]
+    public class SharedVector3 : Shared<Vector3> { }
 }

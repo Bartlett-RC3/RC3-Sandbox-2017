@@ -96,9 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vertex: 0
-  _sources: {fileID: 11400000, guid: ae1277afabf384c4481f92beb11746e1, type: 2}
-  _materials: {fileID: 11400000, guid: b2a6e2f4c9d571b418455ca8b16243b0, type: 2}
-  _scales: {fileID: 11400000, guid: 47def990865bd4541a4815f361817992, type: 2}
+  _sources: {fileID: 11400000, guid: 74e75584be246054186b1c67a3659fd1, type: 2}
+  _materials: {fileID: 11400000, guid: 4bb5671acee10fb4f9668fe44b74e074, type: 2}
 --- !u!135 &135150272407620742
 SphereCollider:
   m_ObjectHideFlags: 1

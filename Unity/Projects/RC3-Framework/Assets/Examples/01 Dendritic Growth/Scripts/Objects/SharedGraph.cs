@@ -11,6 +11,6 @@ namespace RC3.Unity.Examples.DendriticGrowth
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/DendriticGrowth/SharedGraph")]
+    [CreateAssetMenu(menuName = "RC3/Examples/DendriticGrowth/SharedGraph")]
     public class SharedGraph : SharedGraph<VertexObject> { }
 }

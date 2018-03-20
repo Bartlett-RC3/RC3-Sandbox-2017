@@ -13,7 +13,7 @@ using SpatialSlur.SlurCore;
 
 namespace RC3.Unity.Examples.ReinforcedWalks
 {
-    [CreateAssetMenu(menuName = "Objects/ReinforcedWalks/EdgeWeightMapper")]
+    [CreateAssetMenu(menuName = "RC3/Examples/ReinforcedWalks/EdgeWeightMapper")]
     public class EdgeWeightMapper : ScriptableObject
     {
         [SerializeField] private float _weight0;

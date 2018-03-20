@@ -11,6 +11,6 @@ namespace RC3.Unity
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Vector3")]
-    public class SharedVector3 : Shared<Vector3> { }
+    [CreateAssetMenu(menuName = "RC3/Framework/Shared/String")]
+    public class SharedString : Shared<string> { }
 }

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23479187034472858}
   - component: {fileID: 114961029533568012}
   m_Layer: 0
-  m_Name: Octahedron
+  m_Name: Vertex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,10 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vertex: 0
-  _sources: {fileID: 11400000, guid: 8454b97e8854eba4d9a868121b5b1166, type: 2}
-  _meshes: {fileID: 11400000, guid: 47c40ba47d7b152499b4ab85c510a592, type: 2}
-  _materials: {fileID: 11400000, guid: 5bf12a79879e05041b47422be60e24ef, type: 2}
-  _scales: {fileID: 11400000, guid: 4b7ee611183f91d459b4a89350bc79b6, type: 2}
+  _sources: {fileID: 11400000, guid: b0b66fd6c4abeb84d8c5c4017ab3c56f, type: 2}
+  _meshes: {fileID: 11400000, guid: 5210094925c405242962e4ed10d52fba, type: 2}
+  _materials: {fileID: 11400000, guid: c5a7dbce737a0a84992ed672561e91a5, type: 2}
+  _scales: {fileID: 11400000, guid: afccf68884ba273459a4dc18c16c830f, type: 2}
 --- !u!135 &135219646911354704
 SphereCollider:
   m_ObjectHideFlags: 1

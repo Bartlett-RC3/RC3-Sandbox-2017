@@ -16,7 +16,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
         [SerializeField] private SharedSelection _sources;
         [SerializeField] private SharedMeshes _meshes;
         [SerializeField] private SharedMaterials _materials;
-        [SerializeField] private SharedFloats _scales;
+        [SerializeField] private SharedSingles _scales;
 
         private MeshFilter _filter;
         private MeshRenderer _renderer;

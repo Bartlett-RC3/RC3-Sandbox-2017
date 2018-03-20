@@ -15,7 +15,7 @@ namespace RC3.Unity.Examples.DendriticGrowth
     /// </summary>
     public class OctahedralGraphCreator : MonoBehaviour
     {
-        [SerializeField] private SharedGraph _grid;
+        [SerializeField] private SharedGraph _sharedGraph;
         [SerializeField] private VertexObject _vertexObject;
         [SerializeField] private int _countX = 5;
         [SerializeField] private int _countY = 5;
@@ -27,8 +27,8 @@ namespace RC3.Unity.Examples.DendriticGrowth
         /// </summary>
         private void Awake()
         {
-            _grid.Initialize(Graph.Factory.CreateTruncatedOctahedronGrid(_countX, _countY, _countZ));
-            _grid.VertexObjects.AddRange(CreateVertexObjects());
+            _sharedGraph.Initialize(Graph.Factory.CreateTruncatedOctahedronGrid(_countX, _countY, _countZ));
+            _sharedGraph.VertexObjects.AddRange(CreateVertexObjects());
             
             // center on world origin
             transform.position = new Vector3(-_countX * 0.5f, -_countY * 0.5f, -_countZ * 0.5f);
