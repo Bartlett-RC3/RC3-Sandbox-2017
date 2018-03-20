@@ -37,39 +37,4 @@ namespace RC3.Unity
             set { _value = value; }
         }
     }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Float")]
-    public class SharedFloat : Shared<float> { }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Integer")]
-    public class SharedInt : Shared<int> { }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/String")]
-    public class SharedString : Shared<string> { }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Color")]
-    public class SharedColor : Shared<Color> { }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [CreateAssetMenu(menuName = "Objects/Shared/Vector3")]
-    public class SharedVector3 : Shared<Vector3> { }
 }
