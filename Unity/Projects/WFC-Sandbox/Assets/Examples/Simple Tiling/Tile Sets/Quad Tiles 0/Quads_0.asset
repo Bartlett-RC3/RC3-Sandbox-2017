@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c48e15045e874348b9c7ef3bd482b6d, type: 3}
+  m_Name: Quads_0
+  m_EditorClassIdentifier: 
+  _tiles:
+  - {fileID: 11400000, guid: 44c48dca60c086f42a6233b9bc239fa4, type: 2}
+  - {fileID: 11400000, guid: 8b8513df5cc50ec4aa701ff45ea6078b, type: 2}
+  - {fileID: 11400000, guid: 3407f2492781fec4d9a5edb21975e4f9, type: 2}
+  - {fileID: 11400000, guid: f08cff2db0c737341abe6034daf0d72f, type: 2}
+  - {fileID: 11400000, guid: 0b710e97fca0dc840bde8d07f8d5c3c7, type: 2}
+  - {fileID: 11400000, guid: d662d4ea64b279148b609caf24b767c2, type: 2}
