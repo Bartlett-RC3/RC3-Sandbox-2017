@@ -3,7 +3,7 @@ using UnityEngine;
 using SpatialSlur.Core;
 using SpatialSlur.Mesh;
 
-namespace SpatialSlur.Unity.MeshProcessing
+namespace RC3.Unity.TetrahedralGrowth
 {
     using Mesh = UnityEngine.Mesh;
 

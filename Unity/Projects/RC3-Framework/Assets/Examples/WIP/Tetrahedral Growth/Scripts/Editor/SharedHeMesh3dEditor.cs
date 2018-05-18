@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace SpatialSlur.Unity.MeshProcessing
+namespace RC3.Unity.TetrahedralGrowth
 {
     /// <summary>
     /// 

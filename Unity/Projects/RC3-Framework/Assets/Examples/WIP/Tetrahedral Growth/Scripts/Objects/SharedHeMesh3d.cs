@@ -2,11 +2,11 @@
 using UnityEngine;
 using SpatialSlur.Mesh;
 
-namespace SpatialSlur.Unity.MeshProcessing
+namespace RC3.Unity.TetrahedralGrowth
 {
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "SpatialSlur/MeshProcessing/Shared/HeMesh3d")]
+    [CreateAssetMenu(menuName = "RC3/TetrahedralGrowth/Shared/HeMesh3d")]
     public class SharedHeMesh3d : Shared<HeMesh3d> { }
 }
