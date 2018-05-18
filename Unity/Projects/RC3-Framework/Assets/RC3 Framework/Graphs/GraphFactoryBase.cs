@@ -24,7 +24,7 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        public G CreateGrid(int countX, int countY)
+        public G CreateQuadGrid(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
@@ -60,7 +60,7 @@ namespace RC3.Graphs
         /// <param name="countX"></param>
         /// <param name="countY"></param>
         /// <returns></returns>
-        public G CreateTriangleGrid(int countX, int countY)
+        public G CreateHexagonGrid(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
@@ -107,7 +107,7 @@ namespace RC3.Graphs
                     if (y > 0)
                         g.AddEdge(i, i - countX); 
 
-                    // y-1, x+1
+                    // y-1, x + 1
                     if (y > 0 && x < lastX)
                         g.AddEdge(i, i - countX + 1);
                 }
@@ -140,7 +140,7 @@ namespace RC3.Graphs
                 g.AddVertex();
             }
 
-            // add primal edges
+            // add even layer edges
             for (int z = 0; z < countZ; z++)
             {
                 for (int y = 0; y < countY; y++)
@@ -162,26 +162,26 @@ namespace RC3.Graphs
                         if (z > 0)
                             g.AddEdge(i, i - countXY);
 
-                        // z-1
-                        if (z > 0)
-                            g.AddEdge(i, j - countXY);
+                        // x-1, y-1, z-1
+                        if (x > 0 && y > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - countX - 1);
 
+                        // y-1, z-1
+                        if (y > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - countX); 
+                        
                         // x-1, z-1
                         if (x > 0 && z > 0)
                             g.AddEdge(i, j - countXY - 1);
 
-                        // y-1, z-1
-                        if (y > 0 && z > 0)
-                            g.AddEdge(i, j - countXY - countX);
-
-                        // x-1, y-1, z-1
-                        if (x > 0 && y > 0 && z > 0)
-                            g.AddEdge(i, j - countXY - countX - 1);
+                        // z-1
+                        if (z > 0)
+                            g.AddEdge(i, j - countXY);
                     }
                 }
             }
 
-            // add dual edges
+            // add odd layer edges
             for (int z = 0; z < countZ; z++)
             {
                 for (int y = 0; y < countY; y++)

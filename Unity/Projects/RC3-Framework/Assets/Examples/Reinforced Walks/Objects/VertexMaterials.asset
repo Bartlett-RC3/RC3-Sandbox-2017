@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86e0e6bbb700f94497d2b30333c2f2d, type: 3}
+  m_Name: VertexMaterials
+  m_EditorClassIdentifier: 
+  _items:
+  - {fileID: 2100000, guid: d2cf25421e7305243bd0ad2958d46dc7, type: 2}
+  - {fileID: 2100000, guid: a671a47a0b8b05f49b98252334b66ff5, type: 2}
