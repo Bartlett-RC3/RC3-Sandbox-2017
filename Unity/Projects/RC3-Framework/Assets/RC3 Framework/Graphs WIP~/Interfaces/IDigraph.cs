@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SpatialSlur.Core;
-
 /*
  * Notes
  */
@@ -56,12 +54,24 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetVertexNeighborsOut(int vertex);
+        int GetVertexNeighborOut(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetVertexNeighborsIn(int vertex);
+        IEnumerable<int> GetVertexNeighborsOut(int vertex);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetVertexNeighborIn(int vertex, int index);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetVertexNeighborsIn(int vertex);
     }
 }

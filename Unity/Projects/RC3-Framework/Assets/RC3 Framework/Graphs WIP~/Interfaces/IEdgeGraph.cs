@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using SpatialSlur.Core;
-
 /*
  * Notes
  */
@@ -46,6 +44,12 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetIncidentEdges(int vertex);
+        int GetIncidentEdge(int vertex, int index);
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetIncidentEdges(int vertex);
     }
 }

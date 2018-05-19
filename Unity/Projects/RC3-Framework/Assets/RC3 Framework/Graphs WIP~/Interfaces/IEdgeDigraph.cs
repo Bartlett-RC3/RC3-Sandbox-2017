@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SpatialSlur.Core;
-
 /*
  * Notes
  */ 
@@ -44,12 +42,24 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetOutgoingEdges(int vertex);
+        int GetOutgoingEdge(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetIncomingEdges(int vertex);
+        IEnumerable<int> GetOutgoingEdges(int vertex);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        int GetIncomingEdge(int vertex, int index);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetIncomingEdges(int vertex);
     }
 }

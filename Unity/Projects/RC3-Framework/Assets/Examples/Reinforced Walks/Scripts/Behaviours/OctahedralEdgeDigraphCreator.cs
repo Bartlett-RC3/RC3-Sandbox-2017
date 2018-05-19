@@ -8,7 +8,7 @@ using RC3.Graphs;
  * Notes 
  */
 
-namespace RC3.Unity.ReinforcedWalks
+namespace RC3.Unity.Examples.ReinforcedWalks
 {
     /// <summary>
     /// 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using SpatialSlur.Core;
-
 /*
  * Notes
  */ 
@@ -101,25 +99,41 @@ namespace RC3.Graphs
         {
             return _adjOut[v0].Contains(v1);
         }
-        
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborOut(int vertex, int index)
+        {
+            return _adjOut[vertex][index];
+        }
+
 
         /// <summary>
         /// Returns all vertices that the given vertex connects to.
         /// </summary>
-        public ReadOnlyListView<int> GetVertexNeighborsOut(int vertex)
+        public IEnumerable<int> GetVertexNeighborsOut(int vertex)
         {
-            var adj = _adjOut[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            return _adjOut[vertex];
         }
-        
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborIn(int vertex, int index)
+        {
+            return _adjIn[vertex][index];
+        }
+
 
         /// <summary>
         /// Returns all vertices that connect to the given vertex.
         /// </summary>
-        public ReadOnlyListView<int> GetVertexNeighborsIn(int vertex)
+        public IEnumerable<int> GetVertexNeighborsIn(int vertex)
         {
-            var adj = _adjIn[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            return _adjIn[vertex];
         }
     }
 }

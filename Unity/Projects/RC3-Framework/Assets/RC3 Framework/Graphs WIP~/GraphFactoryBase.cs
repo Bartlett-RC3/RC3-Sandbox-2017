@@ -24,7 +24,7 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        public G CreateQuadGrid(int countX, int countY)
+        public G CreateGrid(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
@@ -52,7 +52,7 @@ namespace RC3.Graphs
 
             return g;
         }
-
+        
 
         /// <summary>
         /// 
@@ -60,7 +60,7 @@ namespace RC3.Graphs
         /// <param name="countX"></param>
         /// <param name="countY"></param>
         /// <returns></returns>
-        public G CreateHexagonGrid(int countX, int countY)
+        public G CreateTriangleGrid(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
@@ -80,11 +80,11 @@ namespace RC3.Graphs
 
                     // x-1
                     if (x > 0)
-                        g.AddEdge(i, i - 1);
+                        g.AddEdge(i, i - 1); 
 
                     // y-1
                     if (y > 0)
-                        g.AddEdge(i, i - countX);
+                        g.AddEdge(i, i - countX); 
 
                     // y-1, x-1
                     if (y > 0 && x > 0)
@@ -105,9 +105,9 @@ namespace RC3.Graphs
 
                     // y-1
                     if (y > 0)
-                        g.AddEdge(i, i - countX);
+                        g.AddEdge(i, i - countX); 
 
-                    // y-1, x + 1
+                    // y-1, x+1
                     if (y > 0 && x < lastX)
                         g.AddEdge(i, i - countX + 1);
                 }
@@ -140,7 +140,7 @@ namespace RC3.Graphs
                 g.AddVertex();
             }
 
-            // add even layer edges
+            // add primal edges
             for (int z = 0; z < countZ; z++)
             {
                 for (int y = 0; y < countY; y++)
@@ -162,26 +162,26 @@ namespace RC3.Graphs
                         if (z > 0)
                             g.AddEdge(i, i - countXY);
 
-                        // x-1, y-1, z-1
-                        if (x > 0 && y > 0 && z > 0)
-                            g.AddEdge(i, j - countXY - countX - 1);
-
-                        // y-1, z-1
-                        if (y > 0 && z > 0)
-                            g.AddEdge(i, j - countXY - countX);
+                        // z-1
+                        if (z > 0)
+                            g.AddEdge(i, j - countXY);
 
                         // x-1, z-1
                         if (x > 0 && z > 0)
                             g.AddEdge(i, j - countXY - 1);
 
-                        // z-1
-                        if (z > 0)
-                            g.AddEdge(i, j - countXY);
+                        // y-1, z-1
+                        if (y > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - countX);
+
+                        // x-1, y-1, z-1
+                        if (x > 0 && y > 0 && z > 0)
+                            g.AddEdge(i, j - countXY - countX - 1);
                     }
                 }
             }
 
-            // add odd layer edges
+            // add dual edges
             for (int z = 0; z < countZ; z++)
             {
                 for (int y = 0; y < countY; y++)
@@ -190,7 +190,7 @@ namespace RC3.Graphs
                     {
                         int i = x + y * countX + z * countXY;
                         int j = i + count;
-
+                        
                         // x-1
                         if (x > 0)
                             g.AddEdge(j, j - 1);

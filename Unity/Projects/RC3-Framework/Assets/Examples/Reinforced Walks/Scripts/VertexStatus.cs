@@ -2,7 +2,7 @@
  * Notes
  */
 
-namespace RC3.Unity.ReinforcedWalks
+namespace RC3.Unity.Examples.ReinforcedWalks
 {
     /// <summary>
     /// 
