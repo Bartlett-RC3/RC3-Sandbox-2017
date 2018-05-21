@@ -1,38 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SpatialSlur.Core;
+﻿using System.Collections.Generic;
 
 /*
  * Notes
  */
-
+ 
 namespace RC3.Graphs
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IDigraph
+    public interface IGraph
     {
         /// <summary>
         /// 
         /// </summary>
         int VertexCount { get; }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        int GetDegreeOut(int vertex);
-
+        
 
         /// <summary>
         /// 
         /// </summary>
-        int GetDegreeIn(int vertex);
+        int GetDegree(int vertex);
 
 
         /// <summary>
@@ -56,12 +44,12 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetVertexNeighborsOut(int vertex);
+        int GetVertexNeighbor(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetVertexNeighborsIn(int vertex);
+        IEnumerable<int> GetVertexNeighbors(int vertex);
     }
 }

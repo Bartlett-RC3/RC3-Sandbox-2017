@@ -52,7 +52,7 @@ namespace RC3.Graphs
 
             return g;
         }
-
+        
 
         /// <summary>
         /// 
@@ -80,11 +80,11 @@ namespace RC3.Graphs
 
                     // x-1
                     if (x > 0)
-                        g.AddEdge(i, i - 1);
+                        g.AddEdge(i, i - 1); 
 
                     // y-1
                     if (y > 0)
-                        g.AddEdge(i, i - countX);
+                        g.AddEdge(i, i - countX); 
 
                     // y-1, x-1
                     if (y > 0 && x > 0)
@@ -105,7 +105,7 @@ namespace RC3.Graphs
 
                     // y-1
                     if (y > 0)
-                        g.AddEdge(i, i - countX);
+                        g.AddEdge(i, i - countX); 
 
                     // y-1, x + 1
                     if (y > 0 && x < lastX)
@@ -168,8 +168,8 @@ namespace RC3.Graphs
 
                         // y-1, z-1
                         if (y > 0 && z > 0)
-                            g.AddEdge(i, j - countXY - countX);
-
+                            g.AddEdge(i, j - countXY - countX); 
+                        
                         // x-1, z-1
                         if (x > 0 && z > 0)
                             g.AddEdge(i, j - countXY - 1);
@@ -190,7 +190,7 @@ namespace RC3.Graphs
                     {
                         int i = x + y * countX + z * countXY;
                         int j = i + count;
-
+                        
                         // x-1
                         if (x > 0)
                             g.AddEdge(j, j - 1);

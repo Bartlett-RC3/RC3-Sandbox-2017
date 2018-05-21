@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SpatialSlur.Core;
+﻿using System.Collections.Generic;
 
 /*
  * Notes
- */ 
-
+ */
+ 
 namespace RC3.Graphs
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IEdgeDigraph : IDigraph
+    public interface IEdgeGraph : IGraph
     {
         /// <summary>
         /// 
@@ -44,12 +38,18 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetOutgoingEdges(int vertex);
+        int GetOppositeVertex(int edge, int vertex);
 
 
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetIncomingEdges(int vertex);
+        int GetIncidentEdge(int vertex, int index);
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IEnumerable<int> GetIncidentEdges(int vertex);
     }
 }

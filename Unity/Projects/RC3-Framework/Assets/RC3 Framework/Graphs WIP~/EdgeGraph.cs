@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using SpatialSlur.Core;
+
 /*
  * Notes 
  */
@@ -153,39 +155,12 @@ namespace RC3.Graphs
 
 
         /// <summary>
-        /// 
-        /// </summary>
-        public int GetIncidentEdge(int vertex, int index)
-        {
-            return _adj[vertex][index];
-        }
-
-
-        /// <summary>
         /// Returns all edges incident to the given vertex.
         /// </summary>
-        public IEnumerable<int> GetIncidentEdges(int vertex)
+        public ReadOnlyListView<int> GetIncidentEdges(int vertex)
         {
-            return _adj[vertex];
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int GetVertexNeighbor(int vertex, int index)
-        {
-            return GetOppositeVertex(_adj[vertex][index], vertex);
-        }
-
-
-        /// <summary>
-        /// Returns all vertices connected to the given vertex.
-        /// </summary>
-        public IEnumerable<int> GetVertexNeighbors(int vertex)
-        {
-            foreach (var e in _adj[vertex])
-                yield return GetOppositeVertex(e, vertex);
+            var adj = _adj[vertex];
+            return adj.GetReadOnlyView(adj.Count);
         }
     }
 }

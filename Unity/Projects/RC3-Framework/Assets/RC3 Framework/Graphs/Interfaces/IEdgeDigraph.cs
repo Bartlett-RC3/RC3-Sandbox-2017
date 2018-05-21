@@ -4,64 +4,62 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SpatialSlur.Core;
-
 /*
  * Notes
- */
+ */ 
 
 namespace RC3.Graphs
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface IDigraph
+    public interface IEdgeDigraph : IDigraph
     {
         /// <summary>
         /// 
         /// </summary>
-        int VertexCount { get; }
+        int EdgeCount { get; }
 
 
         /// <summary>
         /// 
         /// </summary>
-        int GetDegreeOut(int vertex);
+        int GetStartVertex(int edge);
 
 
         /// <summary>
         /// 
         /// </summary>
-        int GetDegreeIn(int vertex);
+        int GetEndVertex(int edge);
 
 
         /// <summary>
         /// 
         /// </summary>
-        void AddVertex();
+        int FindEdge(int v0, int v1);
 
 
         /// <summary>
         /// 
         /// </summary>
-        void AddEdge(int v0, int v1);
+        int GetOutgoingEdge(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        bool HasEdge(int v0, int v1);
+        IEnumerable<int> GetOutgoingEdges(int vertex);
 
 
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetVertexNeighborsOut(int vertex);
+        int GetIncomingEdge(int vertex, int index);
 
 
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyListView<int> GetVertexNeighborsIn(int vertex);
+        IEnumerable<int> GetIncomingEdges(int vertex);
     }
 }

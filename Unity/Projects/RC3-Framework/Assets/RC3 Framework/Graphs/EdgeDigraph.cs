@@ -3,12 +3,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SpatialSlur.Core;
-
 /*
  * Notes 
  */
-
+ 
 namespace RC3.Graphs
 {
     /// <summary>
@@ -152,22 +150,76 @@ namespace RC3.Graphs
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        public int GetOutgoingEdge(int vertex, int index)
+        {
+            return _adjOut[vertex][index];
+        }
+
+
+        /// <summary>
         /// Returns all edges that start at the given vertex.
         /// </summary>
-        public ReadOnlyListView<int> GetOutgoingEdges(int vertex)
+        public IEnumerable<int> GetOutgoingEdges(int vertex)
         {
-            var adj = _adjOut[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            return _adjOut[vertex];
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetIncomingEdge(int vertex, int index)
+        {
+            return _adjIn[vertex][index];
         }
 
 
         /// <summary>
         /// Returns all edges that end at the given vertex.
         /// </summary>
-        public ReadOnlyListView<int> GetIncomingEdges(int vertex)
+        public IEnumerable<int> GetIncomingEdges(int vertex)
         {
-            var adj = _adjIn[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            return _adjIn[vertex];
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborOut(int vertex, int index)
+        {
+            return GetEndVertex(_adjOut[vertex][index]);
+        }
+
+
+        /// <summary>
+        /// Returns all vertices that the given vertex connects to.
+        /// </summary>
+        public IEnumerable<int> GetVertexNeighborsOut(int vertex)
+        {
+            foreach (var e in _adjOut[vertex])
+                yield return GetEndVertex(e);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighborIn(int vertex, int index)
+        {
+            return GetStartVertex(_adjIn[vertex][index]);
+        }
+
+
+        /// <summary>
+        /// Returns all vertices that connect to the given vertex.
+        /// </summary>
+        public IEnumerable<int> GetVertexNeighborsIn(int vertex)
+        {
+            foreach (var e in _adjIn[vertex])
+                yield return GetStartVertex(e);
         }
     }
 }

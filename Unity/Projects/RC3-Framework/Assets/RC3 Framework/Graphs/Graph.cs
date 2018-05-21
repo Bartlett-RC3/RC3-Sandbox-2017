@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using SpatialSlur.Core;
-
 /*
  * Notes
- */
+ */ 
 
 namespace RC3.Graphs
 {
@@ -95,12 +93,20 @@ namespace RC3.Graphs
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighbor(int vertex, int index)
+        {
+            return _adj[vertex][index];
+        }
+
+
+        /// <summary>
         /// Returns all vertices connected to the given vertex.
         /// </summary>
-        public ReadOnlyListView<int> GetVertexNeighbors(int vertex)
+        public IEnumerable<int> GetVertexNeighbors(int vertex)
         {
-            var adj = _adj[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            return _adj[vertex];
         }
     }
 }

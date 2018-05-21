@@ -3,8 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SpatialSlur.Core;
-
 /*
  * Notes 
  */
@@ -12,30 +10,28 @@ using SpatialSlur.Core;
 namespace RC3.Graphs
 {
     /// <summary>
-    /// Simple edge list representation of a directed graph.
+    /// Simple edge list representation of an undirected graph.
     /// </summary>
-    public class EdgeDigraph : IEdgeDigraph
+    public class EdgeGraph: IEdgeGraph
     {
         #region Static
 
-        public static readonly EdgeDigraphFactory Factory = new EdgeDigraphFactory();
+        public static readonly EdgeGraphFactory Factory = new EdgeGraphFactory();
         private const int _defaultCapacity = 4;
 
         #endregion
 
 
-        private List<List<int>> _adjOut;
-        private List<List<int>> _adjIn;
+        private List<List<int>> _adj;
         private List<int> _edges;
 
 
         /// <summary>
         /// 
         /// </summary>
-        public EdgeDigraph(int vertexCapacity =  _defaultCapacity, int edgeCapacity = _defaultCapacity)
+        public EdgeGraph(int vertexCapacity = _defaultCapacity, int edgeCapacity = _defaultCapacity)
         {
-            _adjOut = new List<List<int>>(vertexCapacity);
-            _adjIn = new List<List<int>>(vertexCapacity);
+            _adj = new List<List<int>>(vertexCapacity);
             _edges = new List<int>(edgeCapacity << 1);
         }
 
@@ -45,7 +41,7 @@ namespace RC3.Graphs
         /// </summary>
         public int VertexCount
         {
-            get { return _adjOut.Count; }
+            get { return _adj.Count; }
         }
 
 
@@ -59,20 +55,11 @@ namespace RC3.Graphs
 
 
         /// <summary>
-        /// Returns the number of outgoing edges at the given vertex.
+        /// Returns the degree of the given vertex.
         /// </summary>
-        public int GetDegreeOut(int vertex)
+        public int GetDegree(int vertex)
         {
-            return _adjOut[vertex].Count;
-        }
-
-
-        /// <summary>
-        /// Returns the number of incoming edges at the given vertex.
-        /// </summary>
-        public int GetDegreeIn(int vertex)
-        {
-            return _adjIn[vertex].Count;
+            return _adj[vertex].Count;
         }
 
 
@@ -81,28 +68,30 @@ namespace RC3.Graphs
         /// </summary>
         public void AddVertex()
         {
-            AddVertex(_defaultCapacity, _defaultCapacity);
+            AddVertex(_defaultCapacity);
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public void AddVertex(int capacityOut, int capacityIn)
+        public void AddVertex(int capacity = _defaultCapacity)
         {
-            _adjOut.Add(new List<int>(capacityOut));
-            _adjIn.Add(new List<int>(capacityIn));
+            _adj.Add(new List<int>(capacity));
         }
 
 
         /// <summary>
-        /// Adds an edge from the first given vertex to the second.
+        /// Adds an edge between the given vertex.
         /// </summary>
         public void AddEdge(int v0, int v1)
         {
             var e = _edges.Count >> 1;
-            _adjOut[v0].Add(e);
-            _adjIn[v1].Add(e);
+            _adj[v0].Add(e);
+
+            // don't add again if edge is a loop
+            if (v1 != v0)
+                _adj[v1].Add(e);
 
             _edges.Add(v0);
             _edges.Add(v1);
@@ -128,7 +117,7 @@ namespace RC3.Graphs
 
 
         /// <summary>
-        /// 
+        /// Returns true if there is an edge between the given vertices.
         /// </summary>
         public bool HasEdge(int v0, int v1)
         {
@@ -137,13 +126,13 @@ namespace RC3.Graphs
 
 
         /// <summary>
-        /// 
+        /// Returns the first edge between the given vertices or -1 if no edge exists.
         /// </summary>
         public int FindEdge(int v0, int v1)
         {
-            foreach (var e in _adjOut[v0])
+            foreach(var e in _adj[v0])
             {
-                if (GetEndVertex(e) == v1)
+                if (GetOppositeVertex(e, v0) == v1)
                     return e;
             }
 
@@ -152,22 +141,51 @@ namespace RC3.Graphs
 
 
         /// <summary>
-        /// Returns all edges that start at the given vertex.
+        /// 
         /// </summary>
-        public ReadOnlyListView<int> GetOutgoingEdges(int vertex)
+        public int GetOppositeVertex(int edge, int vertex)
         {
-            var adj = _adjOut[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            edge <<= 1;
+            var v0 = _edges[edge];
+            var v1 = _edges[edge + 1];
+            return vertex == v0 ? v1 : vertex == v1 ? v0 : -1;
         }
 
 
         /// <summary>
-        /// Returns all edges that end at the given vertex.
+        /// 
         /// </summary>
-        public ReadOnlyListView<int> GetIncomingEdges(int vertex)
+        public int GetIncidentEdge(int vertex, int index)
         {
-            var adj = _adjIn[vertex];
-            return adj.GetReadOnlyView(adj.Count);
+            return _adj[vertex][index];
+        }
+
+
+        /// <summary>
+        /// Returns all edges incident to the given vertex.
+        /// </summary>
+        public IEnumerable<int> GetIncidentEdges(int vertex)
+        {
+            return _adj[vertex];
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GetVertexNeighbor(int vertex, int index)
+        {
+            return GetOppositeVertex(_adj[vertex][index], vertex);
+        }
+
+
+        /// <summary>
+        /// Returns all vertices connected to the given vertex.
+        /// </summary>
+        public IEnumerable<int> GetVertexNeighbors(int vertex)
+        {
+            foreach (var e in _adj[vertex])
+                yield return GetOppositeVertex(e, vertex);
         }
     }
 }

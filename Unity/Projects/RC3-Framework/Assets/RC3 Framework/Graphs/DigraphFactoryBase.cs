@@ -63,7 +63,7 @@ namespace RC3.Graphs
                     // y-1
                     if (y > 0)
                         g.AddEdge(i, i - countX);
-
+                   
                     // y+1
                     if (y < lastY)
                         g.AddEdge(i, i + countX);
@@ -176,7 +176,7 @@ namespace RC3.Graphs
                     // y-1
                     if (y > 0)
                         g.AddEdge(i, i - countX);
-
+                    
                     // y+1
                     if (y < lastY)
                         g.AddEdge(i, i + countX);
@@ -223,7 +223,7 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        private G CreateHexagonGridUniform(int countX, int countY)
+        private  G CreateHexagonGridUniform(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
@@ -469,7 +469,7 @@ namespace RC3.Graphs
                         // x+1, y+1, z+1
                         if (x < lastX && y < lastY && z < lastZ)
                             g.AddEdge(j, i + countXY + countX + 1);
-
+                        
                         // x+1
                         if (x < lastX)
                             g.AddEdge(j, i + 1);
@@ -699,7 +699,7 @@ namespace RC3.Graphs
                             g.AddEdge(j, i + countX + 1);
                         else
                             g.AddEdge(j, j);
-
+                        
                         // z+1
                         if (z < lastZ)
                             g.AddEdge(j, i + countXY);
