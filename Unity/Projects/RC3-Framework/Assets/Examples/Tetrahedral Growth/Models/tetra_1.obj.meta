@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: bca0f387912be6d4e839955b236598a3
+guid: 0a2c7bfd8724cec4d826581db372da2b
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: default
+    100000: object_1
     100002: //RootNode
-    400000: default
+    400000: object_1
     400002: //RootNode
-    2100000: defaultMat
-    2300000: default
-    3300000: default
-    4300000: default
+    2100000: object_1Mat
+    2300000: object_1
+    3300000: object_1
+    4300000: object_1
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -47,8 +47,8 @@ ModelImporter:
     addColliders: 0
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importCameras: 1
+    importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

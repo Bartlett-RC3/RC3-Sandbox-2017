@@ -20,7 +20,11 @@ namespace RC3.Unity.TetrahedralGrowth
         /// </summary>
         private void Awake()
         {
-            _source.Value = ToHeMesh(GetComponent<MeshFilter>().sharedMesh);
+            var mesh = GetComponent<MeshFilter>().sharedMesh;
+            _source.Value = ToHeMesh(mesh);
+
+            Debug.Log($"{mesh.vertexCount} vertices");
+            Debug.Log($"{mesh.GetIndexCount(0) / 3} triangles");
         }
 
 
