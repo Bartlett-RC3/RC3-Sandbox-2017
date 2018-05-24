@@ -4,13 +4,14 @@ Geometry shader semantics
 https://msdn.microsoft.com/en-us/library/windows/desktop/bb509609(v=vs.85).aspx
 */
 
-Shader "RC3/SDFDemo/ScalarField"
+Shader "RC3/SDFDemo/ScalarField2"
 {
 	Properties
 	{
 		_gradient ("Gradient", 2D) = "" {}
-		_threshold("Threshold", Float) = 1.0
-		_offset("Offset", Float) = 1.0
+		_threshold("Threshold", Range(-1.0, 1.0)) = 1.0
+	    _offset("Offset", Float) = 1.0
+		_width("Width", Float) = 1.0
 		_scale("Scale", Float) = 1.0
 		//_period("Period", Float) = 3.0
 	}
@@ -39,6 +40,7 @@ Shader "RC3/SDFDemo/ScalarField"
 			sampler2D _gradient;
 			float _threshold;
 			float _offset;
+			float _width;
 			float _scale;
 			//float _period;
 
@@ -71,9 +73,9 @@ Shader "RC3/SDFDemo/ScalarField"
 			Helper functions
 			*/
 
-			inline float smoothPulse(float t, float center, float width)
+			inline float smoothShell(float t, float center, float offset, float width)
 			{
-				return smoothstep(0.0, width, abs(t - center));
+				return smoothstep(offset - width, offset + width, abs(t - center));
 			}
 
 			/*
@@ -98,8 +100,8 @@ Shader "RC3/SDFDemo/ScalarField"
 				// triangles streamed in strip order (i.e. 0,1,2/2,1,3/2,3,4/...)
 
 				fragIn f;
-				f.val = smoothstep(_threshold - _offset, _threshold + _offset, g[0].val);
-
+				f.val = smoothShell(g[0].val, _threshold, _offset, _width);
+				
 				f.pos = mul(UNITY_MATRIX_P, float4(p.x + _scale, p.y - _scale, p.z, 1.0));
 				f.tex = float2(0.0, 0.0);
 				triStream.Append(f);
