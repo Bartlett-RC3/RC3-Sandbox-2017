@@ -62,8 +62,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: bbd703960e362194a97d9b16829e7692, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _diffuse:
+        m_Texture: {fileID: 2800000, guid: 17e742c53349a174d8b20946fb46721b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _gradient:
-        m_Texture: {fileID: 2800000, guid: e35fccd84de75954e915ca0c498e58c1, type: 3}
+        m_Texture: {fileID: 2800000, guid: b0bc1c79efae9884ea7c2b9bedf3d20a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -85,12 +89,13 @@ Material:
     - _ZWrite: 1
     - _offset: 1
     - _period: 3
-    - _scale: 1
+    - _scale: 0.75
     - _t0: 0
     - _t1: 1
     - _thickness: 2
     - _threshold: 0
-    - _width: 2
+    - _width: 0.5
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _color: {r: 0.8962264, g: 0.097232126, b: 0.097232126, a: 1}
