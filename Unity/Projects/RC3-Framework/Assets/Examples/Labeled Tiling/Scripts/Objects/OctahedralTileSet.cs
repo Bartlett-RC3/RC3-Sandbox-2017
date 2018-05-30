@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using RC3.WFC;
 
-namespace RC3.Unity.Examples.LabeledTiling
+namespace RC3.Unity.LabeledTiling
 {
     /// <summary>
     /// 
     /// </summary>
-    [CreateAssetMenu(menuName = "RC3/Examples/Labeled Tiling/OctahedralTileset")]
+    [CreateAssetMenu(menuName = "RC3/Labeled Tiling/OctahedralTileset")]
     public class OctahedralTileSet : TileSet
     {
         /// <summary>

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   _mesh: {fileID: 4300018, guid: 5b18a80d96a4c6844895e08abe802831, type: 3}
-  _material: {fileID: 2100000, guid: e1b1d41d5bd8a0f46b0054338b7d58e1, type: 2}
+  _material: {fileID: 2100000, guid: d549c402b02faf34988a940860785b57, type: 2}
   _labels:
   - 0-2
   - 0-3

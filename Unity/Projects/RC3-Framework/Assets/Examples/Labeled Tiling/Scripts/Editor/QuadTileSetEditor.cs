@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 
-namespace RC3.Unity.Examples.LabeledTiling
+namespace RC3.Unity.LabeledTiling
 {
     /// <summary>
     /// 

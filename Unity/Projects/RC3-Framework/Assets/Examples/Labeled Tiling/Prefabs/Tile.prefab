@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4277112419455914}
   - component: {fileID: 212229160074081014}
-  - component: {fileID: 114335229857061090}
+  - component: {fileID: 114641145524588464}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -86,6 +86,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: e1b1d41d5bd8a0f46b0054338b7d58e1, type: 2}
   m_StaticBatchInfo:
@@ -114,7 +115,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1064962556645044}
   m_Mesh: {fileID: 0}
---- !u!114 &114335229857061090
+--- !u!114 &114641145524588464
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -122,9 +123,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1809725788832998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2c58cceaf385cf43a880ccf7594b718, type: 3}
+  m_Script: {fileID: 11500000, guid: e5b99379b28425e488979d2cbcd3c119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _target: {fileID: 11400000, guid: f743d22212531c24699116b3b858da63, type: 2}
 --- !u!114 &114922904220032880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,6 +153,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:

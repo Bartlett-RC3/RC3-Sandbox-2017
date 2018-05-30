@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RC3.WFC;
 
-namespace RC3.Unity.Examples.LabeledTiling
+namespace RC3.Unity.LabeledTiling
 {
     /// <summary>
     /// 

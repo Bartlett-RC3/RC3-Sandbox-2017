@@ -10,7 +10,7 @@ using System.Linq;
 using UnityEngine;
 using RC3.Graphs;
 
-namespace RC3.Unity.Examples.LabeledTiling
+namespace RC3.Unity.LabeledTiling
 {
     /// <summary>
     /// 

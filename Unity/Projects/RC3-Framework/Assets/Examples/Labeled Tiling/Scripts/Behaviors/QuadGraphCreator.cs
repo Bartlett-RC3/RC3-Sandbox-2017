@@ -10,7 +10,7 @@ using System.Linq;
 using UnityEngine;
 using RC3.Graphs;
 
-namespace RC3.Unity.Examples.LabeledTiling
+namespace RC3.Unity.LabeledTiling
 {
     /// <summary>
     /// 
@@ -28,7 +28,7 @@ namespace RC3.Unity.Examples.LabeledTiling
         /// </summary>
         void Awake()
         {
-            _tileGraph.Initialize(Digraph.Factory.CreateQuadGrid(_countX, _countY, true));
+            _tileGraph.Initialize(Digraph.Factory.CreateRectangleGrid(_countX, _countY, true));
             _tileGraph.VertexObjects.AddRange(CreateVertexObjects());
 
             transform.position = new Vector3(_countX * -0.5f, _countY * -0.5f, 0.0f); // center

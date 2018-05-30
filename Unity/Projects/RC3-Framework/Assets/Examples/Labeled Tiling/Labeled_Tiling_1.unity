@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 340881491}
   - component: {fileID: 340881490}
   - component: {fileID: 340881489}
+  - component: {fileID: 340881492}
   - component: {fileID: 340881488}
   - component: {fileID: 340881487}
   - component: {fileID: 340881486}
@@ -184,11 +185,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 340881484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa26de9f32fe6b147969024d9b36c185, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b61f566b36de6a4bb757552d9a82de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sensitivity: 1
-  _stiffness: 5
+  _target: {fileID: 11400000, guid: f743d22212531c24699116b3b858da63, type: 2}
 --- !u!114 &340881487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 340881484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb37ee18b0367ad4d89d7676eab154a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bbe8f57461a35c498a38d6f2fc05bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _sensitivity: 1
@@ -210,11 +210,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 340881484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73582a54fa7d97141aa8e34188bbda0a, type: 3}
+  m_Script: {fileID: 11500000, guid: 84aecdb270ab164498082c7f94bfd6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sensitivity: 5
-  _stiffness: 10
+  _sensitivity: 1
+  _stiffness: 5
 --- !u!81 &340881489
 AudioListener:
   m_ObjectHideFlags: 0
@@ -265,6 +265,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &340881492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 340881484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf2491db4910a04b9e19757bb83cfc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sensitivity: 5
+  _stiffness: 10
 --- !u!1 &1467768197
 GameObject:
   m_ObjectHideFlags: 0

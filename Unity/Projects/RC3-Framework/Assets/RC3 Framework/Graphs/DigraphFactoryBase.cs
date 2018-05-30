@@ -24,16 +24,16 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        public G CreateQuadGrid(int countX, int countY, bool uniform = false)
+        public G CreateRectangleGrid(int countX, int countY, bool uniform = false)
         {
-            return uniform ? CreateQuadGridUniform(countX, countY) : CreateQuadGridDefault(countX, countY);
+            return uniform ? CreateRectangleGridUniform(countX, countY) : CreateRectangleGridDefault(countX, countY);
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        private G CreateQuadGridDefault(int countX, int countY)
+        private G CreateRectangleGridDefault(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
@@ -77,7 +77,7 @@ namespace RC3.Graphs
         /// <summary>
         /// 
         /// </summary>
-        private G CreateQuadGridUniform(int countX, int countY)
+        private G CreateRectangleGridUniform(int countX, int countY)
         {
             var g = Create();
             int n = countX * countY;
