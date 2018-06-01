@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2441e73c68e2ab4aa84f9c281b9c5f6, type: 3}
+  m_Name: Quilt_0_4
+  m_EditorClassIdentifier: 
+  _tiles:
+  - {fileID: 11400000, guid: 0cc43e70f03b1d240b98900e81adbb97, type: 2}
+  - {fileID: 11400000, guid: a4012b5097ba69a4d961fe71f896162d, type: 2}
+  - {fileID: 11400000, guid: b09022a2fca8b184a83e85711fde4c46, type: 2}
+  - {fileID: 11400000, guid: ff5e76bbeef7cb242b7d4765b2c4704e, type: 2}
+  - {fileID: 11400000, guid: b1f40cba895200d48965563abfa75be6, type: 2}
+  - {fileID: 11400000, guid: c3ae1796943e6e047af79cf13289c187, type: 2}
+  - {fileID: 11400000, guid: 3683a0081bdd05f49be0b7f68bcbf85e, type: 2}
+  - {fileID: 11400000, guid: cc63f77fb1560b546bedddf5b9c80b0d, type: 2}
+  - {fileID: 11400000, guid: d354087486734f04db1f6ade20befb3f, type: 2}

@@ -10,7 +10,10 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
+
+using SpatialSlur.Core;
 using RC3.Graphs;
 
 namespace RC3.WFC
@@ -21,14 +24,22 @@ namespace RC3.WFC
     public class TileModel
     {
         #region Nested types
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="size"></param>
+        public delegate void DomainChangedHandler(int position, ReadOnlySet<int> domain);
 
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="position"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        delegate int GetNeighbor(int position, int direction);
+        private delegate int GetAdjacent(int position, int direction);
 
         #endregion
 
@@ -38,167 +49,139 @@ namespace RC3.WFC
         /// <summary>
         /// 
         /// </summary>
-        public static TileModel CreateFromGraph(TileMap map, IGraph graph, int seed = 0)
+        public static TileModel CreateFromGraph<T>(TileMap<T> tiles, IGraph graph, int seed = 0)
         {
+            int degree = tiles.TileDegree;
+
             for(int i = 0; i < graph.VertexCount; i++)
             {
-                if (graph.GetDegree(i) != map.TileDegree)
-                    throw new ArgumentException($"Vertex {i} is not compatible with the given tile map.");
+                if (graph.GetDegree(i) != degree)
+                    throw new ArgumentException($"Vertex {i} is not compatible with the given tile set.");
             }
 
-            return new TileModel(map, graph.GetVertexNeighbor, graph.VertexCount, seed);
+            return new TileModel(tiles.CreateConstraints(), graph.GetVertexNeighbor, graph.VertexCount, tiles.TileCount, seed);
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public static TileModel CreateFromGraph(TileMap map, IDigraph graph, int seed = 0)
+        public static TileModel CreateFromGraph<T>(TileMap<T> tiles, IDigraph graph, int seed = 0)
         {
+            int degree = tiles.TileDegree;
+
             for (int i = 0; i < graph.VertexCount; i++)
             {
-                if (graph.GetDegreeOut(i) != map.TileDegree)
+                if (graph.GetDegreeOut(i) != degree)
                     throw new ArgumentException($"Vertex {i} is not compatible with the given tile map.");
             }
             
-            return new TileModel(map, graph.GetVertexNeighborOut, graph.VertexCount, seed);
+            return new TileModel(tiles.CreateConstraints(), graph.GetVertexNeighborOut, graph.VertexCount, tiles.TileCount, seed);
         }
 
         #endregion
 
+        
+        private Constraint<int>[] _constraints; // constraints for each direction
+        private GetAdjacent _getAdjacent;
+        private int _tileCount; // number of distinct tiles in the model
 
-        private TileMap _map;
-        private GetNeighbor _getNeighbor;
-     
-        private bool[][] _domains; // for each position, boolean values indicating the validity of each tile
-        private int[] _sizes; // the remaining size of each domain
-        private int[] _assigned; // for each position, the assigned tile or -1 if not yet assigned
+        private HashSet<int>[] _domains; // domain of each position
+        private HashSet<int> _unassigned; // set of undefined positions in the model
+        private QueueSet<int> _queue;
 
-        private int[] _positions;
-        private int _remaining; // the number of unassigned positions left in the model
-
-        private Queue<int> _queue; // queue used for propagation
-        private bool[] _queued; // for each position, true if in the queue
-
-        private int[] _buffer; // pre-allocated buffer used during tile selection
+        private List<int> _buffer;
         private Random _random;
 
-        private AssignedCallback _assignedCallback;
-        private ReducedCallback _reducedCallback;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public event DomainChangedHandler DomainChanged;
 
 
         /// <summary>
         /// 
         /// </summary>
-        private TileModel(TileMap map, GetNeighbor getNeighbor, int count, int seed = 0)
+        /// <param name="constraints"></param>
+        /// <param name="getAdjacent"></param>
+        /// <param name="positionCount"></param>
+        /// <param name="tileCount"></param>
+        /// <param name="seed"></param>
+        private TileModel(IEnumerable<Constraint<int>> constraints, GetAdjacent getAdjacent, int positionCount, int tileCount, int seed = 0)
         {
-            _map = map;
-            _getNeighbor = getNeighbor;
-            Initialize(count, seed);
-            Reset();
-        }
+            _constraints = constraints.ToArray();
+            _getAdjacent = getAdjacent;
+            _tileCount = tileCount;
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void Initialize(int count, int seed)
-        {
-            int tileCount = _map.TileCount;
-
-            _domains = new bool[count][];
+            _domains = new HashSet<int>[positionCount];
             for (int i = 0; i < _domains.Length; i++)
-                _domains[i] = new bool[tileCount];
+                _domains[i] = new HashSet<int>(DefaultDomain);
 
-            _sizes = new int[count];
-            _assigned = new int[count];
-
-            _positions = new int[count];
-            _queue = new Queue<int>(count);
-            _queued = new bool[count];
-
-            _buffer = new int[tileCount];
-            _random = new Random(seed);
+            _unassigned = new HashSet<int>(Enumerable.Range(0, positionCount));
+            _queue = new QueueSet<int>();
+            _buffer = new List<int>(tileCount);
+            _random = new Random();
         }
 
-
+        
         /// <summary>
         /// Returns the number of positions in this model.
         /// </summary>
-        public int Count
+        public int PositionCount
         {
             get { return _domains.Length; }
         }
 
 
         /// <summary>
-        /// Returns the last observed position
+        /// Returns the number of tiles in this model.
         /// </summary>
-        public int LastObserved
+        public int TileCount
         {
-            get { return _positions[_remaining]; }
+            get { return _tileCount; }
         }
 
 
-        /// <summary>
-        /// Sets a function that is called when a new tile is assigned.
-        /// </summary>
-        /// <param name="callback"></param>
-        public AssignedCallback AssignedCallback
-        {
-            set { _assignedCallback = value; }
-        }
-
-
-        /// <summary>
-        /// Sets a function that is called when the domain of a tile is reduced.
-        /// </summary>
-        /// <param name="callback"></param>
-        public ReducedCallback ReducedCallback
-        {
-            set { _reducedCallback = value; }
-        }
-
-
-        /// <summary>
-        /// Returns the tile assigned to the given position or -1 if no tile has been assigned yet.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public int GetAssignedTile(int position)
-        {
-            return _assigned[position];
-        }
-
-
-        /// <summary>
-        /// Returns the current size of the domain at the given position.
-        /// Initially, this is equal to the number of tiles in the model.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public int GetDomainSize(int position)
-        {
-            return _sizes[position];
-        }
-
-        
         /// <summary>
         /// 
         /// </summary>
-        public void Reset()
+        private IEnumerable<int> DefaultDomain
         {
-            for (int i = 0; i < _domains.Length; i++)
-            {
-                _domains[i].Set(true);
-                _positions[i] = i;
-            }
+            get { return Enumerable.Range(0, _tileCount); }
+        }
 
-            _sizes.Set(_map.TileCount);
-            _assigned.Set(-1);
 
-            _positions.Shuffle(_random);
-            _remaining = _positions.Length;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        private void OnDomainChanged(int position)
+        {
+            DomainChanged?.Invoke(position, _domains[position]);
+        }
+
+
+        /// <summary>
+        /// Returns the tile assigned to the given position or -1 if multiple tiles are still being considered.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public int GetAssigned(int position)
+        {
+            var d = _domains[position];
+            return d.Count == 1 ? d.First() : -1;
+        }
+
+
+        /// <summary>
+        /// Returns true if the given position has been assigned a tile.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        private bool IsAssigned(int position)
+        {
+            return _domains[position].Count == 1;
         }
 
         
@@ -206,167 +189,144 @@ namespace RC3.WFC
         /// 
         /// </summary>
         /// <param name="position"></param>
-        private void ResetLastObserved(int count)
-        {
-            // TODO
-            // resets the the n most recently observed positions
-            // will allow for partial backtracking
-        }
-
-
-        /// <summary>
-        /// Returns the status of the collapse.
-        /// If complete, then no need to propagate.
-        /// </summary>
-        public CollapseStatus Observe()
-        {
-            int p, n;
-            GetNextMin(out p, out n);
-
-            if (n == 0)
-               return CollapseStatus.Contradiction;
-
-            if (n == 1)
-                AssignLast(p);
-            else
-                AssignRandom(p);
-
-            return _remaining == 0 ?
-                CollapseStatus.Complete : CollapseStatus.Incomplete;
-        }
-
-   
-        /// <summary>
-        /// Returns the the most constrained position in the model i.e. the one with the fewest remaining values
-        /// </summary>
-        private void GetNextMin(out int position, out int size)
-        {
-            int index = 0;
-            position = _positions[index];
-            size = _sizes[position];
-
-            for (int i = 1; i < _remaining; i++)
-            {
-                var p = _positions[i];
-                var n = _sizes[p];
-
-                if (n < size)
-                {
-                    index = i;
-                    position = p;
-                    size = n;
-                }
-            }
-
-            _positions.Swap(index, --_remaining);
-        }
-
-
-        /// <summary>
-        /// Assigns the last remaining tile at the given position
-        /// </summary>
-        private void AssignLast(int position)
-        {
-            var d = _domains[position];
-
-            for(int i = 0; i < d.Length; i++)
-            {
-                if (d[i])
-                {
-                    _assigned[position] = i;
-                    _assignedCallback?.Invoke(position, i);
-                    return;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Assigns a random remaining tile at the given position
-        /// </summary>
-        /// <param name="position"></param>
-        private void AssignRandom(int position)
-        {
-            var d = _domains[position];
-            int n = 0;
-
-            for (int i = 0; i < d.Length; i++)
-            {
-                if (d[i])
-                    _buffer[n++] = i;
-            }
-
-            Assign(position, _buffer[_random.Next(n)]);
-        }
-
-
-        /// <summary>
-        /// Assigns the given tile at the given position.
-        /// </summary>
+        /// <param name="tile"></param>
         public void Assign(int position, int tile)
         {
             var d = _domains[position];
-            d.Set(false);
-            d[tile] = true;
-            _sizes[position] = 1;
-
-            _assigned[position] = tile;
-            _assignedCallback?.Invoke(position, tile);
+            d.Clear();
+            d.Add(tile);
+            OnDomainChanged(position);
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public void Propagate()
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public ReadOnlySet<int> GetDomain(int position)
         {
-            TryEnqueue(LastObserved);
-            var degree = _map.TileDegree;
+            return _domains[position];
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        public void ResetDomain(int position)
+        {
+            SetDomain(position, DefaultDomain);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="tiles"></param>
+        public void SetDomain(int position, IEnumerable<int> tiles)
+        {
+            var d = _domains[position];
+            d.Clear();
+            d.UnionWith(tiles);
+            _unassigned.Add(position);
+            OnDomainChanged(position);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="tiles"></param>
+        public void ReduceDomain(int position, IEnumerable<int> tiles)
+        {
+            _domains[position].ExceptWith(tiles);
+            OnDomainChanged(position);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="tiles"></param>
+        public void ExpandDomain(int position, IEnumerable<int> tiles)
+        {
+            _domains[position].UnionWith(tiles);
+            _unassigned.Add(position);
+            OnDomainChanged(position);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ResetAllDomains()
+        {
+            for (int i = 0; i < _domains.Length; i++)
+                ResetDomain(i);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public CollapseStatus Step()
+        {
+            if (_unassigned.Count == 0)
+                return CollapseStatus.Complete;
             
+            var min = _unassigned.SelectMin(p => _domains[p].Count);
+            var d = _domains[min];
+            var n = d.Count;
+       
+            // contradiction if no variabes remaining
+            if (n == 0)
+                return CollapseStatus.Contradiction;
+
+            _unassigned.Remove(min);
+
+            Assign(min, d.ElementAt(_random.Next(n)));
+            Propagate(min);
+
+            return CollapseStatus.Incomplete;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Propagate(int position)
+        {
+            _queue.Enqueue(position);
+
             while (_queue.Count > 0)
             {
-                var p0 = Dequeue();
+                var p0 = _queue.Dequeue();
                 var d0 = _domains[p0];
 
-                // try reducing the domain of each neighbor
-                for(int i = 0; i < degree; i++)
+                // reduce the domain of each neighbor
+                for(int i = 0; i < _constraints.Length; i++)
                 {
-                    var p1 = _getNeighbor(p0, i);
+                    var p1 = _getAdjacent(p0, i);
                     if (p1 == p0) continue; // skip if boundary (neighbor is self)
 
-                    int d = _map.Reduce(i, d0, _domains[p1]);
+                    // collect inconsistent variables
+                    var d1 = _domains[p1];
+                    _buffer.AddRange(_constraints[i].GetInconsistent(d1, d0));
 
-                    // if domain was reduced, then continue search from p1
-                    if (d > 0)
+                    // reduce if necessary
+                    if(_buffer.Count > 0)
                     {
-                        var n = _sizes[p1] -= d;
-                        _reducedCallback?.Invoke(p1, n);
-                        TryEnqueue(p1);
+                        ReduceDomain(p1, _buffer);
+                        _queue.Enqueue(p1);
+                        _buffer.Clear();
                     }
                 }
             }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void TryEnqueue(int position)
-        {
-            if (_queued[position]) return;
-            _queue.Enqueue(position);
-            _queued[position] = true;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private int Dequeue()
-        {
-            var p = _queue.Dequeue();
-            _queued[p] = false;
-            return p;
         }
     }
 }

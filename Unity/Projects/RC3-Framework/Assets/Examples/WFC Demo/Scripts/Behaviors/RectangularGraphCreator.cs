@@ -15,7 +15,7 @@ namespace RC3.Unity.WFCDemo
     /// <summary>
     /// 
     /// </summary>
-    public class RectangularGraphCreator : MonoBehaviour
+    public class RectangularGraphCreator : InitializableBehavior
     {
         [SerializeField] SharedDigraph _tileGraph;
         [SerializeField] VertexObject _vertexPrefab;
@@ -26,7 +26,7 @@ namespace RC3.Unity.WFCDemo
         /// <summary>
         /// 
         /// </summary>
-        void Awake()
+        public override void Initialize()
         {
             _tileGraph.Initialize(Digraph.Factory.CreateRectangleGrid(_countX, _countY, true));
             _tileGraph.VertexObjects.AddRange(CreateVertexObjects());

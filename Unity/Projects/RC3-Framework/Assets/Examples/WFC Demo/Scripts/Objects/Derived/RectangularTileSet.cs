@@ -6,7 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RC3.WFC2;
+using RC3.WFC;
 
 namespace RC3.Unity.WFCDemo
 {

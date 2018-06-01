@@ -10,17 +10,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RC3.Graphs;
-using RC3.WFC2;
+using RC3.WFC;
 
 namespace RC3.Unity.WFCDemo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class TileModelManager : MonoBehaviour
+    public class TileModelManager : InitializableBehavior
     {
         [SerializeField] private SharedDigraph _tileGraph;
         [SerializeField] private TileSet _tileSet;
+        [SerializeField] private TileModelInitializer _initializer;
         [SerializeField] private int _substeps = 10;
         [SerializeField] private int _seed = 1;
 
@@ -35,7 +36,7 @@ namespace RC3.Unity.WFCDemo
         /// <summary>
         /// 
         /// </summary>
-        void Start()
+        public override void Initialize()
         {
             _graph = _tileGraph.Graph;
             _verts = _tileGraph.VertexObjects;
@@ -44,8 +45,8 @@ namespace RC3.Unity.WFCDemo
             _model = TileModel.CreateFromGraph(_map, _graph, _seed);
             _model.DomainChanged += OnDomainChanged;
             _status = CollapseStatus.Incomplete;
-            
-            InitDomains();
+
+            _initializer?.Initialize(_model);
         }
 
 
@@ -73,37 +74,7 @@ namespace RC3.Unity.WFCDemo
             }
         }
 
-       
-        /// <summary>
-        /// 
-        /// </summary>
-        private void InitDomains()
-        {
-            // TODO
-            // Add further constraints to domains here
-            // AssignBoundary(0);
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void AssignBoundary(int tile)
-        {
-            for (int i = 0; i < _graph.VertexCount; i++)
-            {
-                foreach (int j in _graph.GetVertexNeighborsOut(i))
-                {
-                    if (j == i)
-                    {
-                        _model.Assign(i, tile);
-                        break;
-                    }
-                }
-            }
-        }
-
-
+      
         /// <summary>
         /// 
         /// </summary>
@@ -144,7 +115,8 @@ namespace RC3.Unity.WFCDemo
             foreach (var v in _verts)
                 v.Tile = null;
 
-            InitDomains();
+            _initializer?.Initialize(_model);
         }
     }
+
 }
