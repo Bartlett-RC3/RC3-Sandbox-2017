@@ -45,7 +45,7 @@ namespace RC3.Unity.WFCDemo
             _model = TileModel.CreateFromGraph(_map, _graph, _seed);
             _model.DomainChanged += OnDomainChanged;
             _status = CollapseStatus.Incomplete;
-
+            
             _initializer?.Initialize(_model);
         }
 
