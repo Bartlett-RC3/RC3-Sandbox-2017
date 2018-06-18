@@ -479,3 +479,5 @@ MonoBehaviour:
   _tileSet: {fileID: 11400000, guid: 0ebe336ae713cef47b83427a9ded3ef4, type: 2}
   _validLabels:
   - x
+  - b
+  - a

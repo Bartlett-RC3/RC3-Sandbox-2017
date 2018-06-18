@@ -18,7 +18,6 @@ namespace RC3.Unity.WFCDemo
     public class TileGraphExtractor : MonoBehaviour
     {
         [SerializeField] private SharedDigraph _tileGraph;
-        [SerializeField] private TileSet _tileSet;
         [SerializeField] private string[] _validLabels;
 
         private TileModel _model;
@@ -52,12 +51,14 @@ namespace RC3.Unity.WFCDemo
 
             for (int i = 0; i < g0.VertexCount; i++)
             {
-                var tile = _tileSet[_model.GetAssigned(i)];
+                var tile = _model.GetAssigned(i);
                 var n = _map.TileDegree;
 
                 for (int j = 0; j < n; j++)
                 {
-                    if (_labelSet.Contains(tile.Labels[j]))
+                    var label = _map.GetLabel(j, tile);
+
+                    if (_labelSet.Contains(label))
                         g1.AddEdge(i, j);
                 }
             }
