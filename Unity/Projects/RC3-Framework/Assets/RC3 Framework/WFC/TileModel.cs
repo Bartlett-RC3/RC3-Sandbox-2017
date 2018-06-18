@@ -90,8 +90,8 @@ namespace RC3.WFC
         private HashSet<int> _unassigned; // set of undefined positions in the model
         private QueueSet<int> _queue;
 
+        private TileSelector _selector;
         private List<int> _buffer;
-        private Random _random;
 
         
         /// <summary>
@@ -120,8 +120,9 @@ namespace RC3.WFC
 
             _unassigned = new HashSet<int>(Enumerable.Range(0, positionCount));
             _queue = new QueueSet<int>();
+
+            _selector = new RandomTileSelector(this, seed);
             _buffer = new List<int>(tileCount);
-            _random = new Random();
         }
 
         
@@ -149,6 +150,22 @@ namespace RC3.WFC
         private IEnumerable<int> DefaultDomain
         {
             get { return Enumerable.Range(0, _tileCount); }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public TileSelector Selector
+        {
+            get { return _selector; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException();
+
+                _selector = value;
+            }
         }
 
 
@@ -281,15 +298,14 @@ namespace RC3.WFC
             
             var min = _unassigned.SelectMin(p => _domains[p].Count);
             var d = _domains[min];
-            var n = d.Count;
        
             // contradiction if no variabes remaining
-            if (n == 0)
+            if (d.Count == 0)
                 return CollapseStatus.Contradiction;
 
             _unassigned.Remove(min);
-
-            Assign(min, d.ElementAt(_random.Next(n)));
+            
+            Assign(min, _selector.Select(min));
             Propagate(min);
 
             return CollapseStatus.Incomplete;

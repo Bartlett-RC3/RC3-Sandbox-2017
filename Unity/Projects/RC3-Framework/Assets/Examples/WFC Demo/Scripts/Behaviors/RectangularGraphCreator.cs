@@ -31,7 +31,7 @@ namespace RC3.Unity.WFCDemo
             _tileGraph.Initialize(Digraph.Factory.CreateRectangleGrid(_countX, _countY, true));
             _tileGraph.VertexObjects.AddRange(CreateVertexObjects());
 
-            transform.position = new Vector3(_countX * -0.5f, _countY * -0.5f, 0.0f); // center
+            transform.localPosition = new Vector3(_countX * -0.5f, _countY * -0.5f, 0.0f); // center
         }
 
 

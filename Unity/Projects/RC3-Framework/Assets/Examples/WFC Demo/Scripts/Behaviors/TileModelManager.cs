@@ -14,6 +14,8 @@ using RC3.WFC;
 
 namespace RC3.Unity.WFCDemo
 {
+
+
     /// <summary>
     /// 
     /// </summary>
@@ -36,6 +38,24 @@ namespace RC3.Unity.WFCDemo
         /// <summary>
         /// 
         /// </summary>
+        public TileModel TileModel
+        {
+            get { return _model; }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public TileMap<string> TileMap
+        {
+            get { return _map; }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Initialize()
         {
             _graph = _tileGraph.Graph;
@@ -43,6 +63,7 @@ namespace RC3.Unity.WFCDemo
 
             _map = _tileSet.CreateMap();
             _model = TileModel.CreateFromGraph(_map, _graph, _seed);
+
             _model.DomainChanged += OnDomainChanged;
             _status = CollapseStatus.Incomplete;
             
