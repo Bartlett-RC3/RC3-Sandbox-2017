@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 using SpatialSlur.Core;
 using SpatialSlur.Mesh;
@@ -22,9 +24,8 @@ namespace RC3.Unity.TetrahedralGrowth
 
         private HashSet<int> _growthFaces = new HashSet<int>();
         private Queue<int> _fillEdges = new Queue<int>();
-        private double _fillAngle = Math.PI * 0.75;
+        private double _fillAngle = Math.PI * 2.0 / 3.0;
 
-        
         /// <summary>
         /// 
         /// </summary>
@@ -34,19 +35,15 @@ namespace RC3.Unity.TetrahedralGrowth
             ValidateMesh();
 
             var faces = _mesh.Faces;
-            
-            // add all faces to the growth list
-            for(int i = 0; i < faces.Count; i++)
-                _growthFaces.Add(i);
-            
             var edges = _mesh.Edges;
 
+            // add all faces to the growth list
+            for (int i = 0; i < faces.Count; i++)
+                _growthFaces.Add(i);
+            
             // add all edges to the fill queue
             for (int i = 0; i < edges.Count; i++)
                 _fillEdges.Enqueue(i);
-
-            // fill initial
-            Fill();
         }
 
 
@@ -70,8 +67,7 @@ namespace RC3.Unity.TetrahedralGrowth
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                Grow();
-                // Fill();
+                if (!Fill()) Grow();
             }
         }
 
@@ -79,53 +75,17 @@ namespace RC3.Unity.TetrahedralGrowth
         /// <summary>
         /// 
         /// </summary>
-        private void LateUpdate()
+        private void AddTetrahedron(HeMesh3d.Face face, int vertex)
         {
-            DebugDisplaySurface();
-            DebugDisplayVolume();
-        }
+            var he = face.First;
 
+            var v0 = he.Start;
+            he = he.Next;
+            var v1 = he.Start;
+            he = he.Next;
+            var v2 = he.Start;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void DebugDisplaySurface()
-        {
-            var color = Color.white;
-
-            foreach(var he in _mesh.Edges)
-            {
-                var p0 = (Vector3)he.Start.Position;
-                var p1 = (Vector3)he.End.Position;
-                Debug.DrawLine(p0, p1, color);
-            }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void DebugDisplayVolume()
-        {
-            var color = new Color(1.0f, 1.0f, 1.0f, 0.2f);
-            var verts = _mesh.Vertices;
-
-            foreach (var tetra in _tetrahedra)
-            {
-                var p0 = (Vector3)verts[tetra.Vertex0].Position;
-                var p1 = (Vector3)verts[tetra.Vertex1].Position;
-                var p2 = (Vector3)verts[tetra.Vertex2].Position;
-                var p3 = (Vector3)verts[tetra.Vertex3].Position;
-
-                Debug.DrawLine(p0, p1, color);
-                Debug.DrawLine(p0, p2, color);
-                Debug.DrawLine(p0, p3, color);
-
-                Debug.DrawLine(p1, p2, color);
-                Debug.DrawLine(p1, p3, color);
-
-                Debug.DrawLine(p2, p3, color);
-            }
+            _tetrahedra.Add(new Tetra(vertex, v2, v1, v0));
         }
 
 
@@ -134,13 +94,15 @@ namespace RC3.Unity.TetrahedralGrowth
         /// <summary>
         /// 
         /// </summary>
-        private void Grow()
+        private bool Grow()
         {
             if (_growthFaces.Count == 0)
-                return;
+                return false;
 
-            if (!TryAppend(SelectFace()))
-                Grow();
+            if (!TryGrowAt(SelectFace()))
+                return Grow();
+
+            return true;
         }
 
 
@@ -155,7 +117,7 @@ namespace RC3.Unity.TetrahedralGrowth
             return _growthFaces.SelectMin(fi =>
             {
                 var f = faces[fi];
-                return _faceEvaluator.Evalutate(f);
+                return f.IsUnused? double.MaxValue : _faceEvaluator.Evalutate(f);
             });
         }
 
@@ -163,10 +125,17 @@ namespace RC3.Unity.TetrahedralGrowth
         /// <summary>
         /// 
         /// </summary>
-        private bool TryAppend(int faceIndex)
+        private bool TryGrowAt(int faceIndex)
         {
             var faces = _mesh.Faces;
             var face = faces[faceIndex];
+
+            // face may have been deleted from the growth mesh
+            if (face.IsUnused)
+            {
+                _growthFaces.Remove(faceIndex);
+                return false;
+            }
 
             double dist;
             var p = GetFacePoint(face, out dist);
@@ -186,12 +155,12 @@ namespace RC3.Unity.TetrahedralGrowth
             foreach (var he in face.Halfedges)
                 _fillEdges.Enqueue(he >> 1);
 
-            // add new faces
+            // cache tetrahedron
+            AddTetrahedron(face, _mesh.Vertices.Count);
+
+            // modify growth mesh
             var v = _mesh.PokeFace(face);
             v.Position = p;
-
-            // cache tetrahedron
-            // AddTetrahedron(face, v);
 
             return true;
         }
@@ -238,7 +207,7 @@ namespace RC3.Unity.TetrahedralGrowth
 
             foreach(var v in verts)
             {
-                if (v.IsUnused) continue;
+                //if (v.IsUnused) continue; // skipping unused verts causes non-manifold growth on occasion
 
                 if (point.SquareDistanceTo(v.Position) < radSqr)
                     return true;
@@ -255,76 +224,171 @@ namespace RC3.Unity.TetrahedralGrowth
         /// <summary>
         /// 
         /// </summary>
-        private void Fill()
+        private bool Fill()
+        {
+            if (_fillEdges.Count == 0)
+                return false;
+
+            if (!TryFillAt(_fillEdges.Dequeue()))
+                return Fill();
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool TryFillAt(int edgeIndex)
         {
             var edges = _mesh.Edges;
+            var he0 = edges[edgeIndex];
 
-            while(_fillEdges.Count > 0)
+            // check if edge is still valid
+            if (he0.IsUnused)
+                return false;
+
+            var a = he0.GetDihedralAngle(f => f.GetNormal());
+
+            // check dihedral angle
+            if (a >= _fillAngle)
+                return false;
+
+            var he1 = he0.Twin;
+
+            // handle degen case
+            if (he0.Previous.Start.IsConnectedTo(he1.Previous.Start))
             {
-                var he0 = edges[_fillEdges.Dequeue()];
-                var he1 = he0.Twin;
+                // TODO enqueue new fill edges and growth faces
 
-                // TODO check if tip is the same
-                if(he0.Previous.Start == he1.Previous.Start)
-                {
-                    // TODO handle degen case
-                    continue;
-                }
-                
-                var a = he0.GetDihedralAngle(f => f.GetNormal());
-                
-                if (a < _fillAngle)
-                {
-                    // enqueue fill edges
-                    _fillEdges.Enqueue(he0.Previous >> 1);
-                    _fillEdges.Enqueue(he0.Next >> 1);
+                // cache tetrahedron
+                AddTetrahedron(he0.Face, he1.Previous.Start);
 
-                    _fillEdges.Enqueue(he1.Previous >> 1);
-                    _fillEdges.Enqueue(he1.Next >> 1);
-
-                    // cache tetrahedron
-                    // AddTetrahedron(he0);
-
-                    _mesh.SpinEdge(he0);
-                }
+                // modify growth mesh
+                _mesh.CollapseEdge(he0);
             }
+            else
+            {
+                // enqueue fill edges
+                _fillEdges.Enqueue(he0.Previous >> 1);
+                _fillEdges.Enqueue(he0.Next >> 1);
+
+                _fillEdges.Enqueue(he1.Previous >> 1);
+                _fillEdges.Enqueue(he1.Next >> 1);
+
+                // cache tetrahedron
+                AddTetrahedron(he0.Face, he1.Previous.Start);
+
+                // modify growth mesh
+                _mesh.SpinEdge(he0);
+            }
+
+            return true;
         }
-        
+
         #endregion
 
+
+        #region Debug display
         
-
         /// <summary>
         /// 
         /// </summary>
-        private void AddTetrahedronGrow(HeMesh3d.Face face, HeMesh3d.Vertex vertex)
+        public void DebugDisplayTetrahedra()
         {
-            var he = face.First;
+            const float scale0 = 0.1f;
+            const float scale1 = 0.3f;
+            const float invPeriod = 1.0f / 3.0f; // period of pulse in seconds
+            const float twoPi = Mathf.PI * 2.0f;
 
-            var v0 = he.Start;
-            he = he.Next;
-            var v1 = he.Start;
-            he = he.Next;
-            var v2 = he.Start;
+            var verts = _mesh.Vertices;
 
-            _tetrahedra.Add(new Tetra(vertex, v2, v1, v0));
+            Color c0 = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+            Color c1 = new Color(0.9f, 0.9f, 0.9f, 1.0f);
+            
+            float scale = Mathf.Lerp(scale0, scale1, Mathf.Cos(Time.time * invPeriod * twoPi) * 0.5f + 0.5f);
+            float ti = 1.0f / (_tetrahedra.Count - 1);
+
+            GL.PushMatrix();
+            GL.MultMatrix(transform.localToWorldMatrix);
+
+            // draw faces
+            GL.Begin(GL.TRIANGLES);
+            {
+                for(int i = 0; i < _tetrahedra.Count; i++)
+                {
+                    var tetra = _tetrahedra[i];
+                    
+                    var p0 = (Vector3)verts[tetra.Vertex0].Position;
+                    var p1 = (Vector3)verts[tetra.Vertex1].Position;
+                    var p2 = (Vector3)verts[tetra.Vertex2].Position;
+                    var p3 = (Vector3)verts[tetra.Vertex3].Position;
+
+                    var cen = (p0 + p1 + p2 + p3) * 0.25f;
+                    GL.Color(Color.Lerp(c0, c1, i * ti));
+                    
+                    p0 = Vector3.Lerp(p0, cen, scale);
+                    p1 = Vector3.Lerp(p1, cen, scale);
+                    p2 = Vector3.Lerp(p2, cen, scale);
+                    p3 = Vector3.Lerp(p3, cen, scale);
+
+                    GL.Vertex(p1);
+                    GL.Vertex(p2);
+                    GL.Vertex(p3);
+
+                    GL.Vertex(p0);
+                    GL.Vertex(p1);
+                    GL.Vertex(p3);
+
+                    GL.Vertex(p0);
+                    GL.Vertex(p2);
+                    GL.Vertex(p1);
+
+                    GL.Vertex(p0);
+                    GL.Vertex(p3);
+                    GL.Vertex(p2);
+                }
+            }
+            GL.End();
+
+            // draw edges
+            GL.Begin(GL.LINES);
+            {
+                GL.Color(Color.white);
+
+                for (int i = 0; i < _tetrahedra.Count; i++)
+                {
+                    var tetra = _tetrahedra[i];
+
+                    var p0 = (Vector3)verts[tetra.Vertex0].Position;
+                    var p1 = (Vector3)verts[tetra.Vertex1].Position;
+                    var p2 = (Vector3)verts[tetra.Vertex2].Position;
+                    var p3 = (Vector3)verts[tetra.Vertex3].Position;
+                    
+                    GL.Vertex(p0);
+                    GL.Vertex(p1);
+
+                    GL.Vertex(p0);
+                    GL.Vertex(p2);
+                
+                    GL.Vertex(p0);
+                    GL.Vertex(p3);
+
+                    GL.Vertex(p1);
+                    GL.Vertex(p2);
+
+                    GL.Vertex(p1);
+                    GL.Vertex(p3);
+
+                    GL.Vertex(p2);
+                    GL.Vertex(p3);
+                }
+            }
+            GL.End();
+
+            GL.PopMatrix();
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void AddTetrahedron(HeMesh3d.Halfedge hedge)
-        {
-            var v3 = hedge.Twin.Previous.Start;
-
-            var v0 = hedge.Start;
-            hedge = hedge.Next;
-            var v1 = hedge.Start;
-            hedge = hedge.Next;
-            var v2 = hedge.Start;
-
-            _tetrahedra.Add(new Tetra(v3, v2, v1, v0));
-        }
+        #endregion
     }
 }

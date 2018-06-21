@@ -2,8 +2,7 @@
 /*
  * Notes
  * 
- * TODO 
- * test stack implementation instead of queue
+ * TODO handle public domain modifications
  * 
  * impl ref
  * https://adamsmith.as/papers/wfc_is_constraint_solving_in_the_wild.pdf
@@ -87,7 +86,7 @@ namespace RC3.WFC
         private int _tileCount; // number of distinct tiles in the model
 
         private HashSet<int>[] _domains; // domain of each position
-        private HashSet<int> _unassigned; // set of undefined positions in the model
+        private HashSet<int> _remaining; // remaining positions to collapse
         private QueueSet<int> _queue;
 
         private TileSelector _selector;
@@ -118,7 +117,7 @@ namespace RC3.WFC
             for (int i = 0; i < _domains.Length; i++)
                 _domains[i] = new HashSet<int>(DefaultDomain);
 
-            _unassigned = new HashSet<int>(Enumerable.Range(0, positionCount));
+            _remaining = new HashSet<int>(Enumerable.Range(0, positionCount));
             _queue = new QueueSet<int>();
 
             _selector = new RandomTileSelector(this, seed);
@@ -147,15 +146,6 @@ namespace RC3.WFC
         /// <summary>
         /// 
         /// </summary>
-        private IEnumerable<int> DefaultDomain
-        {
-            get { return Enumerable.Range(0, _tileCount); }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
         public TileSelector Selector
         {
             get { return _selector; }
@@ -172,15 +162,14 @@ namespace RC3.WFC
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="position"></param>
-        private void OnDomainChanged(int position)
+        private IEnumerable<int> DefaultDomain
         {
-            DomainChanged?.Invoke(position, _domains[position]);
+            get { return Enumerable.Range(0, _tileCount); }
         }
 
 
         /// <summary>
-        /// Returns the tile assigned to the given position or -1 if multiple tiles are still being considered.
+        /// Returns the tile assigned to the given position or -1 if a tile hasn't been assigned yet.
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
@@ -188,31 +177,6 @@ namespace RC3.WFC
         {
             var d = _domains[position];
             return d.Count == 1 ? d.First() : -1;
-        }
-
-
-        /// <summary>
-        /// Returns true if the given position has been assigned a tile.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        private bool IsAssigned(int position)
-        {
-            return _domains[position].Count == 1;
-        }
-
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="tile"></param>
-        public void Assign(int position, int tile)
-        {
-            var d = _domains[position];
-            d.Clear();
-            d.Add(tile);
-            OnDomainChanged(position);
         }
 
 
@@ -231,9 +195,11 @@ namespace RC3.WFC
         /// 
         /// </summary>
         /// <param name="position"></param>
-        public void ResetDomain(int position)
+        /// <param name="tiles"></param>
+        public void SetDomain(int position, IEnumerable<int> tiles)
         {
-            SetDomain(position, DefaultDomain);
+            Validate(tiles);
+            SetDomainImpl(position, tiles);
         }
 
 
@@ -242,12 +208,22 @@ namespace RC3.WFC
         /// </summary>
         /// <param name="position"></param>
         /// <param name="tiles"></param>
-        public void SetDomain(int position, IEnumerable<int> tiles)
+        public void SetDomainImpl(int position, IEnumerable<int> tiles)
         {
             var d = _domains[position];
+
+            // if domain has been modified, need to reset and expand first
+            if (d.Count != _tileCount)
+            {
+                d.Clear();
+                d.UnionWith(DefaultDomain);
+                ExpandFrom(position);
+            }
+
             d.Clear();
             d.UnionWith(tiles);
-            _unassigned.Add(position);
+            _remaining.Add(position);
+
             OnDomainChanged(position);
         }
 
@@ -265,25 +241,75 @@ namespace RC3.WFC
 
 
         /// <summary>
-        /// 
+        /// Resets the domain at the given position
         /// </summary>
         /// <param name="position"></param>
-        /// <param name="tiles"></param>
-        public void ExpandDomain(int position, IEnumerable<int> tiles)
+        public void ResetDomain(int position)
         {
-            _domains[position].UnionWith(tiles);
-            _unassigned.Add(position);
+            var d = _domains[position];
+
+            // check if domain is already reset
+            if (d.Count == _tileCount)
+                return;
+
+            d.Clear();
+            d.UnionWith(DefaultDomain);
+            _remaining.Add(position);
+
             OnDomainChanged(position);
+            ExpandFrom(position);
+        }
+
+
+        /// <summary>
+        /// Resets all domains in the tile model.
+        /// </summary>
+        public void ResetAllDomains()
+        {
+            _remaining.Clear();
+
+            for (int i = 0; i < _domains.Length; i++)
+            {
+                var d = _domains[i];
+
+                d.Clear();
+                d.UnionWith(DefaultDomain);
+                _remaining.Add(i);
+
+                OnDomainChanged(i);
+            }
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        public void ResetAllDomains()
+        /// <param name="position"></param>
+        private void OnDomainChanged(int position)
         {
-            for (int i = 0; i < _domains.Length; i++)
-                ResetDomain(i);
+            DomainChanged?.Invoke(position, _domains[position]);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tile"></param>
+        private void Validate(int tile)
+        {
+            if ((uint)tile >= (uint)_tileCount)
+                throw new IndexOutOfRangeException("The given tile is not valid.");
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tiles"></param>
+        private void Validate(IEnumerable<int> tiles)
+        {
+            foreach (var tile in tiles)
+                Validate(tile);
         }
 
 
@@ -293,20 +319,27 @@ namespace RC3.WFC
         /// <returns></returns>
         public CollapseStatus Step()
         {
-            if (_unassigned.Count == 0)
+            if (_remaining.Count == 0)
                 return CollapseStatus.Complete;
             
-            var min = _unassigned.SelectMin(p => _domains[p].Count);
-            var d = _domains[min];
+            var pmin = _remaining.SelectMin(p => _domains[p].Count);
+            var d = _domains[pmin];
        
             // contradiction if no variabes remaining
             if (d.Count == 0)
                 return CollapseStatus.Contradiction;
 
-            _unassigned.Remove(min);
-            
-            Assign(min, _selector.Select(min));
-            Propagate(min);
+            // select tile & validate
+            var tile = _selector.Select(pmin);
+            Validate(tile);
+
+            // assign selected tile @ min pos
+            d.Clear();
+            d.Add(tile);
+            _remaining.Remove(pmin);
+
+            OnDomainChanged(pmin);
+            CollapseFrom(pmin);
 
             return CollapseStatus.Incomplete;
         }
@@ -315,7 +348,7 @@ namespace RC3.WFC
         /// <summary>
         /// 
         /// </summary>
-        private void Propagate(int position)
+        private void CollapseFrom(int position)
         {
             _queue.Enqueue(position);
 
@@ -330,19 +363,43 @@ namespace RC3.WFC
                     var p1 = _getAdjacent(p0, i);
                     if (p1 == p0) continue; // skip if boundary (neighbor is self)
 
-                    // collect inconsistent variables
+                    // collect inconsistent variables in d1
                     var d1 = _domains[p1];
                     _buffer.AddRange(_constraints[i].GetInconsistent(d1, d0));
 
-                    // reduce if necessary
+                    // reduce d1 if necessary
                     if(_buffer.Count > 0)
                     {
-                        ReduceDomain(p1, _buffer);
+                        d1.ExceptWith(_buffer);
+                        OnDomainChanged(p1);
+
                         _queue.Enqueue(p1);
                         _buffer.Clear();
                     }
                 }
             }
         }
+
+
+        /// <summary>
+        /// Called whenever the domain is reset
+        /// </summary>
+        /// <param name="position"></param>
+        private void ExpandFrom(int position)
+        {
+            // TODO
+        }
+
+
+        /*
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetDebugReport()
+        {
+            return "";
+        }
+        */
     }
 }

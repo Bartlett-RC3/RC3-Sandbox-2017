@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2441e73c68e2ab4aa84f9c281b9c5f6, type: 3}
+  m_Name: Quilt_1_0
+  m_EditorClassIdentifier: 
+  _tiles:
+  - {fileID: 11400000, guid: f5d2e4d0f14a65e42be1970e1dc5fb86, type: 2}
+  - {fileID: 11400000, guid: 987c361628eed5b4fbc2c71c5f1815ec, type: 2}
+  - {fileID: 11400000, guid: d2b20d61b1d3e1f438cbcde49ec3e47e, type: 2}
+  - {fileID: 11400000, guid: ce7f12b0de820634ab5a160c0e30d89f, type: 2}
+  - {fileID: 11400000, guid: b010875d763276241962dc5e1f882225, type: 2}
+  - {fileID: 11400000, guid: 8a1d78e1a87d77f499b7ad8d189f4755, type: 2}
+  - {fileID: 11400000, guid: 960ff0506b7ba514ca74f1af946ea983, type: 2}
+  - {fileID: 11400000, guid: 92c62ec6c48541b478d5b261d18fb40f, type: 2}
+  - {fileID: 11400000, guid: b858f1ab160f63c4d95b5c8845777070, type: 2}
+  - {fileID: 11400000, guid: cd57103d835883b45b83a9240b601e52, type: 2}
+  - {fileID: 11400000, guid: 4561999be128786438b0d841dd4969d9, type: 2}
+  - {fileID: 11400000, guid: e9d263bcdbdfb684a9d8abf17d8b0ac5, type: 2}
+  - {fileID: 11400000, guid: 1fae0819758378147a15b17a08575cd2, type: 2}
+  - {fileID: 11400000, guid: 0e9995960d4793f4bb97d9d12c886d1f, type: 2}
+  - {fileID: 11400000, guid: 82ce1cb6ba769d749ac8d17a04013abe, type: 2}
+  - {fileID: 11400000, guid: 86ed5fbcab0626e42b361789f7bec8ae, type: 2}
+  - {fileID: 11400000, guid: a2d0c1ef07ee26449ac753dc49449988, type: 2}

@@ -312,6 +312,7 @@ MonoBehaviour:
   _growthMesh: {fileID: 11400000, guid: f1f9d3028fe550d4b84ff73d8c84e7e3, type: 2}
   _faceEvaluator: {fileID: 2135023685}
   _offsetField: {fileID: 1001597409}
+  _fillAngle: 1.5707963267948966
 --- !u!1 &1470007691
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +463,7 @@ GameObject:
   - component: {fileID: 1924176180}
   - component: {fileID: 1924176179}
   - component: {fileID: 1924176178}
+  - component: {fileID: 1924176181}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -507,7 +509,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -571,6 +573,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sensitivity: 5
   _stiffness: 10
+--- !u!114 &1924176181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1924176173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10de7a30eb8ef5e4fbd78995280bb170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _growthManager: {fileID: 1290675862}
+  _material: {fileID: 2100000, guid: e170f5ec7498e6649a464b02b79c6be8, type: 2}
 --- !u!1 &1962056816
 GameObject:
   m_ObjectHideFlags: 0

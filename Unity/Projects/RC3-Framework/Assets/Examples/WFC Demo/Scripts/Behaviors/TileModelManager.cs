@@ -23,7 +23,6 @@ namespace RC3.Unity.WFCDemo
     {
         [SerializeField] private SharedDigraph _tileGraph;
         [SerializeField] private TileSet _tileSet;
-        [SerializeField] private TileModelInitializer _initializer;
         [SerializeField] private int _substeps = 10;
         [SerializeField] private int _seed = 1;
 
@@ -33,6 +32,8 @@ namespace RC3.Unity.WFCDemo
         private TileModel _model;
         private TileMap<string> _map;
         private CollapseStatus _status;
+
+        private TileModelInitializer _initializer;
 
 
         /// <summary>
@@ -66,7 +67,8 @@ namespace RC3.Unity.WFCDemo
 
             _model.DomainChanged += OnDomainChanged;
             _status = CollapseStatus.Incomplete;
-            
+
+            _initializer = GetComponent<TileModelInitializer>();
             _initializer?.Initialize(_model);
         }
 

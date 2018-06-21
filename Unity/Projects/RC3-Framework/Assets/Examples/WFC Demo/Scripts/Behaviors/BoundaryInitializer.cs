@@ -10,21 +10,18 @@ namespace RC3.Unity.WFCDemo
     /// <summary>
     /// 
     /// </summary>
-    public class SetBoundaryTile : TileModelInitializer
+    public class BoundaryInitializer : TileModelInitializer
     {
         [SerializeField] private SharedDigraph _tileGraph;
-        [SerializeField] private int _tile;
+        [SerializeField] private int[] _tiles;
 
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="model"></param>
         public override void Initialize(TileModel model)
         {
-            if (_tile < 0)
-                return;
-
             var graph = _tileGraph.Graph;
             
             for (int i = 0; i < graph.VertexCount; i++)
@@ -33,7 +30,7 @@ namespace RC3.Unity.WFCDemo
                 {
                     if (j == i)
                     {
-                        model.Assign(i, _tile);
+                        model.SetDomain(i, _tiles);
                         break;
                     }
                 }
