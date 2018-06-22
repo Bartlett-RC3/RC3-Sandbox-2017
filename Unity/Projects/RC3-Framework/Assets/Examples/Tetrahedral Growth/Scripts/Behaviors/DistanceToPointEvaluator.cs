@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 using SpatialSlur.Core;
 using SpatialSlur.Mesh;
 
 namespace RC3.Unity.TetrahedralGrowth
 {
+
+
     /// <summary>
     /// 
     /// </summary>

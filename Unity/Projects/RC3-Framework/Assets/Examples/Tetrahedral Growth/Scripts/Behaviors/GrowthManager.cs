@@ -26,6 +26,7 @@ namespace RC3.Unity.TetrahedralGrowth
         private Queue<int> _fillEdges = new Queue<int>();
         private double _fillAngle = Math.PI * 2.0 / 3.0;
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -290,7 +291,7 @@ namespace RC3.Unity.TetrahedralGrowth
 
 
         #region Debug display
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -387,6 +388,102 @@ namespace RC3.Unity.TetrahedralGrowth
             GL.End();
 
             GL.PopMatrix();
+        }
+
+        #endregion
+
+
+        #region Export
+
+        [SerializeField] private string _exportPath;
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void LateUpdate()
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+                ExportTetrahedra();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        private void ExportTetrahedra()
+        {
+            var tetraPts = GetTetrahedraCoords();
+            CoreIO.SerializeBinary(tetraPts, _exportPath);
+            Debug.Log($"Tetrahedra exported to {_exportPath}");
+        }
+
+
+        /*
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private List<Vec3d> GetTetrahedraPoints()
+        {
+            List<Vec3d> result = new List<Vec3d>();
+
+            var verts = _mesh.Vertices;
+            
+            foreach(var tetra in _tetrahedra)
+            {
+                var p0 = verts[tetra.Vertex0].Position;
+                var p1 = verts[tetra.Vertex0].Position;
+                var p2 = verts[tetra.Vertex0].Position;
+                var p3 = verts[tetra.Vertex0].Position;
+
+                result.Add(p0);
+                result.Add(p1);
+                result.Add(p2);
+                result.Add(p3);
+            }
+
+            return result;
+        }
+        */
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private List<double> GetTetrahedraCoords()
+        {
+            List<double> result = new List<double>();
+
+            var verts = _mesh.Vertices;
+
+            foreach (var tetra in _tetrahedra)
+            {
+                var p0 = verts[tetra.Vertex0].Position;
+                var p1 = verts[tetra.Vertex1].Position;
+                var p2 = verts[tetra.Vertex2].Position;
+                var p3 = verts[tetra.Vertex3].Position;
+
+                result.Add(p0.X);
+                result.Add(p0.Y);
+                result.Add(p0.Z);
+
+                result.Add(p1.X);
+                result.Add(p1.Y);
+                result.Add(p1.Z);
+
+                result.Add(p2.X);
+                result.Add(p2.Y);
+                result.Add(p2.Z);
+
+                result.Add(p3.X);
+                result.Add(p3.Y);
+                result.Add(p3.Z);
+            }
+
+            return result;
         }
 
         #endregion

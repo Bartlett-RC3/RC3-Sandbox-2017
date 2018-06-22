@@ -19,6 +19,7 @@ namespace RC3.Unity.TetrahedralGrowth
         /// </summary>
         void OnPostRender()
         {
+            // call GL stuff here
             _material.SetPass(0);
             _growthManager.DebugDisplayTetrahedra();
         }
