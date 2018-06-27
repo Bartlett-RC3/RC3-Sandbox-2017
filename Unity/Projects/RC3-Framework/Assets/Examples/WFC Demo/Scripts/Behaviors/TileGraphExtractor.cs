@@ -41,29 +41,56 @@ namespace RC3.Unity.WFCDemo
         /// <summary>
         /// 
         /// </summary>
-        public Digraph Extract()
+        public EdgeGraph ExtractEdgeGraph()
+        {
+            var result = new EdgeGraph();
+            ExtractTo(result);
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Graph ExtractGraph()
+        {
+            var result = new Graph();
+            ExtractTo(result);
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ExtractTo(IGraph target)
         {
             if (_model == null)
                 Initialize();
 
-            var g0 = _tileGraph.Graph;
-            var g1 = new Digraph(g0.VertexCount);
+            var source = _tileGraph.Graph;
+            var n = _map.TileDegree;
 
-            for (int i = 0; i < g0.VertexCount; i++)
+            for (int v0 = 0; v0 < source.VertexCount; v0++)
             {
-                var tile = _model.GetAssigned(i);
-                var n = _map.TileDegree;
+                var tile = _model.GetAssigned(v0);
 
-                for (int j = 0; j < n; j++)
+                for (int i = 0; i < n; i++)
                 {
-                    var label = _map.GetLabel(j, tile);
+                    var label = _map.GetLabel(i, tile);
 
                     if (_labelSet.Contains(label))
-                        g1.AddEdge(i, j);
+                    {
+                        var v1 = source.GetVertexNeighborOut(v0, i);
+
+                        // avoids multi-edges and self loops
+                        if (v1 > v0)
+                            target.AddEdge(v0, v1);
+                    }
                 }
             }
-
-            return g0;
         }
     }
 

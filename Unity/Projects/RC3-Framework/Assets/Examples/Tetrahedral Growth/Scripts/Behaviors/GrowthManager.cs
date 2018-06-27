@@ -24,7 +24,9 @@ namespace RC3.Unity.TetrahedralGrowth
 
         private HashSet<int> _growthFaces = new HashSet<int>();
         private Queue<int> _fillEdges = new Queue<int>();
-        private double _fillAngle = Math.PI * 2.0 / 3.0;
+
+        private double _maxAspect = 2.0; // tetra aspect = longest edge / shortest altitude
+        private double _maxDihedralAngle = Math.PI * 2.0 / 3.0;
 
 
         /// <summary>
@@ -249,10 +251,76 @@ namespace RC3.Unity.TetrahedralGrowth
             if (he0.IsUnused)
                 return false;
 
+            // check concavity
+            // TODO must be cheaper method for this
+            var angle = he0.GetDihedralAngle(f => f.GetNormal());
+
+            if (angle > Math.PI)
+                return false;
+
+            var he1 = he0.Twin;
+
+            // check aspect
+            var aspect = GeometryUtil.GetTetraAspect(
+                he0.Start.Position,
+                he1.Start.Position,
+                he0.Previous.Start.Position,
+                he1.Previous.Start.Position
+             );
+
+            Debug.Log($"Fill aspect = {aspect: 0.000}");
+
+            // don't fill if aspect is too large
+            if (aspect > _maxAspect)
+                return false;
+
+            // handle degen case
+            if (he0.Previous.Start.IsConnectedTo(he1.Previous.Start))
+            {
+                // TODO enqueue new fill edges and growth faces
+
+                // cache tetrahedron
+                AddTetrahedron(he0.Face, he1.Previous.Start);
+
+                // modify growth mesh
+                _mesh.CollapseEdge(he0);
+            }
+            else
+            {
+                // enqueue fill edges
+                _fillEdges.Enqueue(he0.Previous >> 1);
+                _fillEdges.Enqueue(he0.Next >> 1);
+
+                _fillEdges.Enqueue(he1.Previous >> 1);
+                _fillEdges.Enqueue(he1.Next >> 1);
+
+                // cache tetrahedron
+                AddTetrahedron(he0.Face, he1.Previous.Start);
+
+                // modify growth mesh
+                _mesh.SpinEdge(he0);
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool TryFillAt2(int edgeIndex)
+        {
+            var edges = _mesh.Edges;
+            var he0 = edges[edgeIndex];
+
+            // check if edge is still valid
+            if (he0.IsUnused)
+                return false;
+
             var a = he0.GetDihedralAngle(f => f.GetNormal());
 
             // check dihedral angle
-            if (a >= _fillAngle)
+            if (a > _maxDihedralAngle)
                 return false;
 
             var he1 = he0.Twin;

@@ -89,7 +89,7 @@ namespace RC3.WFC
         private HashSet<int> _remaining; // remaining positions to collapse
         private QueueSet<int> _queue;
 
-        private TileSelector _selector;
+        private ITileSelector _selector;
         private List<int> _buffer;
 
         
@@ -120,7 +120,7 @@ namespace RC3.WFC
             _remaining = new HashSet<int>(Enumerable.Range(0, positionCount));
             _queue = new QueueSet<int>();
 
-            _selector = new RandomTileSelector(this, seed);
+            _selector = new RandomTileSelector(seed);
             _buffer = new List<int>(tileCount);
         }
 
@@ -146,7 +146,7 @@ namespace RC3.WFC
         /// <summary>
         /// 
         /// </summary>
-        public TileSelector Selector
+        public ITileSelector Selector
         {
             get { return _selector; }
             set
@@ -330,7 +330,7 @@ namespace RC3.WFC
                 return CollapseStatus.Contradiction;
 
             // select tile & validate
-            var tile = _selector.Select(pmin);
+            var tile = _selector.Select(this, pmin);
             Validate(tile);
 
             // assign selected tile @ min pos

@@ -7,31 +7,34 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-using SpatialSlur.Core;
+using UnityEngine;
 
-namespace RC3.WFC
+using SpatialSlur.Core;
+using RC3.WFC;
+
+namespace RC3.Unity.WFCDemo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ProbabilisticTileSelector : TileSelector
+    public class ProbabilisticTileSelector : MonoBehaviour, ITileSelector
     {
+        [SerializeField] private TileSet _tileSet;
+        [SerializeField] private double[] _weights;
+        [SerializeField] private int _seed;
+
         private ProbabilitySelector _selector;
-        private double[] _weights;
 
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="model"></param>
-        public ProbabilisticTileSelector(TileModel model, IEnumerable<double> weights, int seed = 1) : base(model)
+        private void Awake()
         {
-            _weights = weights.ToArray();
+            if (_weights.Length != _tileSet.Count)
+                throw new ArgumentException("The number of weights provided must match the size of the tile set.");
 
-            if (_weights.Length != model.TileCount)
-                throw new ArgumentException("The number of weights provided must match the number of tiles in the model.");
-
-            _selector = new ProbabilitySelector(_weights, new Random(seed));
+            _selector = new ProbabilitySelector(_weights, new System.Random(_seed));
         }
 
 
@@ -40,11 +43,11 @@ namespace RC3.WFC
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public override int Select(int position)
+        public int Select(TileModel model, int position)
         {
-            var d = _model.GetDomain(position);
+            var d = model.GetDomain(position);
             _selector.SetWeights(GetModifiedWeights(d)); // update the weights in the selector
-            return d.ElementAt(_selector.Next());
+            return _selector.Next();
         }
 
 

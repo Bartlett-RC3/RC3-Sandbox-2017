@@ -68,6 +68,10 @@ namespace RC3.Unity.WFCDemo
             _model.DomainChanged += OnDomainChanged;
             _status = CollapseStatus.Incomplete;
 
+            var selector = GetComponent<ITileSelector>();
+            if (selector != null)
+                _model.Selector = selector;
+
             _initializer = GetComponent<TileModelInitializer>();
             _initializer?.Initialize(_model);
         }
