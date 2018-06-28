@@ -53,6 +53,14 @@ namespace RC3.Unity.WFCDemo
             get { return _map; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public CollapseStatus Status
+        {
+            get { return _status; }
+        }
+
 
         /// <summary>
         /// 
