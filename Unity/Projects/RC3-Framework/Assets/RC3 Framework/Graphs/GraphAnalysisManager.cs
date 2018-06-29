@@ -98,7 +98,7 @@ namespace RC3.Graphs
             {
                 HashSet<int> set = components[i];
                 string setstring = string.Join(",", components[i]);
-                Debug.Log("TestGraph | ConnectedComponent# " + (i+1) + " = " + setstring);
+                Debug.Log("TestGraph | ConnectedComponent# " + (i + 1) + " = " + setstring);
             }
 
             float[] normalizedcomponents = _graphprocessing.RemapComponentsToArray(testgraph, components);
@@ -120,7 +120,7 @@ namespace RC3.Graphs
 
             if (_graphextractor != null && _tilemodelmanager != null)
             {
-                if(_tilemodelmanager.Status == CollapseStatus.Complete)
+                if (_tilemodelmanager.Status == CollapseStatus.Complete)
                 {
                     _graphextractor.ExtractSharedEdgeGraph(_analysisgraph);
 
@@ -134,10 +134,11 @@ namespace RC3.Graphs
 
                     //normalized/remapped components to an array for graph coloring
                     float[] normalizedcomponents = _graphprocessing.RemapComponentsToArray(_analysisgraph.Graph, connectedcomponents);
+                    //float[] normalizedcomponents = _graphprocessing.RemapComponentsSizeToArray(_analysisgraph.Graph, connectedcomponents);
 
                     //analyze/get 1) ground support sources, 2) list of vertex depths 3) max depth 
-                    List<int> sources = _graphprocessing.GetGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, .5f);
-                    int[] depths = _graphprocessing.DepthsFromGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, .5f);
+                    List<int> sources = _graphprocessing.GetGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, 2f);
+                    int[] depths = _graphprocessing.DepthsFromGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, 2f);
                     int maxdepth = _graphprocessing.MaxDepth(depths);
 
                     //analyze/get 1) unreachable vertices, 2) remapped vertex depths between 0,1, 3) edgeless vertices

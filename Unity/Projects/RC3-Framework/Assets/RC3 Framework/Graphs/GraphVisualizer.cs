@@ -17,8 +17,7 @@ public class GraphVisualizer : MonoBehaviour
     private GraphAnalysisManager _graphanalysis;
     [SerializeField]
     private Material _material;
-    [SerializeField]
-    private Material _material2;
+
 
     private MeshRenderer _meshRenderer;
     private MeshFilter _meshFilter;
@@ -92,7 +91,7 @@ public class GraphVisualizer : MonoBehaviour
 
         if (_rendermode == RenderMode.Components)
         {
-            _meshRenderer.sharedMaterial = _material2;
+            _meshRenderer.sharedMaterial = _material;
 
             Vector2[] uvs = new Vector2[_mesh.vertices.Length];
             for (int i = 0; i < _mesh.vertices.Length; i++)
@@ -102,7 +101,7 @@ public class GraphVisualizer : MonoBehaviour
             }
 
             Vector2[] uv2s = new Vector2[_mesh.vertices.Length];
-            float[] edgethicknessarray = RemapValues(_analysisgraph.NormalizedDepths, minedgesize, maxedgesize);
+            float[] edgethicknessarray = RemapValues(_analysisgraph.NormalizedComponents, minedgesize, maxedgesize);
             for (int i = 0; i < _mesh.vertices.Length; i++)
             {
                 Vector2 uv = new Vector2(edgethicknessarray[i], 0);
