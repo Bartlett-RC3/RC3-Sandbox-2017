@@ -29,12 +29,14 @@ public class GraphVisualizer : MonoBehaviour
     [SerializeField]
     private float maxedgesize = 3f;
 
-    public RenderMode _rendermode = RenderMode.DepthFromSource;
+    public RenderMode _vizmode = RenderMode.DepthFromSource;
 
     public enum RenderMode
     {
         DepthFromSource,
-        Components
+        Components,
+        ComponentsSize
+
     }
 
     void Awake()
@@ -64,7 +66,7 @@ public class GraphVisualizer : MonoBehaviour
 
     public void SetVizColors()
     {
-        if (_rendermode == RenderMode.DepthFromSource)
+        if (_vizmode == RenderMode.DepthFromSource)
         {
             _meshRenderer.sharedMaterial = _material;
 
@@ -89,7 +91,7 @@ public class GraphVisualizer : MonoBehaviour
             _mesh.SetIndices(_analysisgraph.LineIndices.ToArray<int>(), MeshTopology.Lines, 0);
         }
 
-        if (_rendermode == RenderMode.Components)
+        if (_vizmode == RenderMode.Components)
         {
             _meshRenderer.sharedMaterial = _material;
 
@@ -102,6 +104,31 @@ public class GraphVisualizer : MonoBehaviour
 
             Vector2[] uv2s = new Vector2[_mesh.vertices.Length];
             float[] edgethicknessarray = RemapValues(_analysisgraph.NormalizedComponents, minedgesize, maxedgesize);
+            for (int i = 0; i < _mesh.vertices.Length; i++)
+            {
+                Vector2 uv = new Vector2(edgethicknessarray[i], 0);
+                uv2s[i] = uv;
+            }
+            _mesh.uv = uvs;
+            _mesh.uv2 = uv2s;
+
+            _mesh.vertices = _analysisgraph.Vertices;
+            _mesh.SetIndices(_analysisgraph.LineIndices.ToArray<int>(), MeshTopology.Lines, 0);
+        }
+
+        if (_vizmode == RenderMode.ComponentsSize)
+        {
+            _meshRenderer.sharedMaterial = _material;
+
+            Vector2[] uvs = new Vector2[_mesh.vertices.Length];
+            for (int i = 0; i < _mesh.vertices.Length; i++)
+            {
+                Vector2 uv = new Vector2(_analysisgraph.NormalizedComponentsBySize[i], 0);
+                uvs[i] = uv;
+            }
+
+            Vector2[] uv2s = new Vector2[_mesh.vertices.Length];
+            float[] edgethicknessarray = RemapValues(_analysisgraph.NormalizedComponentsBySize, minedgesize, maxedgesize);
             for (int i = 0; i < _mesh.vertices.Length; i++)
             {
                 Vector2 uv = new Vector2(edgethicknessarray[i], 0);
@@ -202,6 +229,13 @@ public class GraphVisualizer : MonoBehaviour
     {
         get { return _meshObj; }
     }
+
+    public RenderMode VizMode
+    {
+        get { return _vizmode; }
+        set { _vizmode = value; }
+    } 
+
 
     public bool IsVisible
     {

@@ -29,6 +29,8 @@ namespace RC3.Graphs
         private SharedAnalysisEdgeGraph _analysisgraph;
         private GraphVisualizer _graphvisualizer;
 
+        private int _graphviz = 0;
+
         #endregion
 
         #region Constructors
@@ -134,7 +136,7 @@ namespace RC3.Graphs
 
                     //normalized/remapped components to an array for graph coloring
                     float[] normalizedcomponents = _graphprocessing.RemapComponentsToArray(_analysisgraph.Graph, connectedcomponents);
-                    //float[] normalizedcomponents = _graphprocessing.RemapComponentsSizeToArray(_analysisgraph.Graph, connectedcomponents);
+                    float[] normalizedcomponentsbysize = _graphprocessing.RemapComponentsSizeToArray(_analysisgraph.Graph, connectedcomponents);
 
                     //analyze/get 1) ground support sources, 2) list of vertex depths 3) max depth 
                     List<int> sources = _graphprocessing.GetGroundSources(_analysisgraph.Graph, _analysisgraph.Vertices, 2f);
@@ -151,6 +153,7 @@ namespace RC3.Graphs
                     _analysisgraph.ClosuresCount = closurecount;
                     _analysisgraph.ConnectedComponents = connectedcomponents;
                     _analysisgraph.NormalizedComponents = normalizedcomponents;
+                    _analysisgraph.NormalizedComponentsBySize = normalizedcomponentsbysize;
                     _analysisgraph.ConnectedComponentsCount = componentcount;
                     _analysisgraph.Sources = sources;
                     _analysisgraph.Depths = depths;
@@ -169,7 +172,10 @@ namespace RC3.Graphs
                     }
 
                     string normalizedcomponentsstring = string.Join(",", _analysisgraph.NormalizedComponents);
+                    string normalizedcomponentsbysizestring = string.Join(",", _analysisgraph.NormalizedComponentsBySize);
+
                     Debug.Log("Exracted Graph | NormalizedComponents = " + normalizedcomponentsstring);
+                    Debug.Log("Exracted Graph | NormalizedComponentsBySize = " + normalizedcomponentsbysizestring);
 
                     Debug.Log("Exracted Graph | Closures Count = " + _analysisgraph.ClosuresCount);
                     Debug.Log("Exracted Graph | Closures Rate = " + _analysisgraph.ClosureRate);
@@ -219,6 +225,30 @@ namespace RC3.Graphs
             {
                 UpdateAnalysis();
                 UpdateGraphMesh();
+            }
+
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                if (_graphviz < 2)
+                {
+                    _graphviz++;
+                    if (_graphviz == 1)
+                    {
+                        _graphvisualizer.VizMode = GraphVisualizer.RenderMode.Components;
+                    }
+
+                    if (_graphviz == 2)
+                    {
+                        _graphvisualizer.VizMode = GraphVisualizer.RenderMode.ComponentsSize;
+                    }
+                }
+                else
+                {
+                    _graphviz = 0;
+                    _graphvisualizer.VizMode = GraphVisualizer.RenderMode.DepthFromSource;
+                }
+
+                _graphvisualizer.SetVizColors();
             }
         }
 

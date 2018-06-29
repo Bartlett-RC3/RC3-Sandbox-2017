@@ -190,29 +190,46 @@ namespace RC3.Graphs
             for (int i = 0; i < components.Count; i++)
             {
                 HashSet<int> component = components[i];
-                int componentsize = component.Count;
-                componentsizes.Add(componentsize);
-                if (componentsize > maxsize)
+                if (components.Count > 1)
                 {
-                    maxsize = componentsize;
+                    int componentsize = component.Count;
+                    componentsizes.Add(componentsize);
+                    if (componentsize > maxsize)
+                    {
+                        maxsize = componentsize;
+                    }
+
+                    if (componentsize < minsize)
+                    {
+                        minsize = componentsize;
+                    }
                 }
 
-                if (componentsize < minsize)
-                {
-                    minsize = componentsize;
-                }
 
             }
 
             for (int i = 0; i < components.Count; i++)
             {
                 HashSet<int> component = components[i];
-                int componentsize = component.Count;
-
-                foreach (int index in component)
+                if (components.Count > 1)
                 {
-                    _outputvalues[index] = Remap(componentsize, minsize, maxsize, 0, 1);
+                    int componentsize = component.Count;
+
+                    foreach (int index in component)
+                    {
+                        _outputvalues[index] = Remap(componentsize, minsize, maxsize, 0, 1);
+                    }
+
                 }
+
+                else
+                {
+                    foreach (int index in component)
+                    {
+                        _outputvalues[index] = 1;
+                    }
+                }
+
             }
             return _outputvalues;
         }

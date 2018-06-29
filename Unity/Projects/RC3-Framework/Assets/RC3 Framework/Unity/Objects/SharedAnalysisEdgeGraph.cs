@@ -25,6 +25,7 @@ namespace RC3.Unity
         private int _connectedcomponentscount = -1;
         private List<HashSet<int>> _connectedcomponents = new List<HashSet<int>>();
         private float[] _normalizedcomponents;
+        private float[] _normalizedcomponentsbysize;
         private int _closurescount = -1;
         private float _closurerate = -1f;
         private List<int> _sources = new List<int>();
@@ -68,6 +69,15 @@ namespace RC3.Unity
             get { return _edgeObjs; }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public float[] NormalizedComponentsBySize
+        {
+            get { return _normalizedcomponentsbysize; }
+            set { _normalizedcomponentsbysize = value; }
+        }
 
         /// <summary>
         /// 
