@@ -11,6 +11,7 @@ namespace RC3.Unity.SDFDemo
     /// <summary>
     /// 
     /// </summary>
+    [ExecuteInEditMode]
     public abstract class ScalarField : MonoBehaviour, IField<float>
     {
         /// <summary>

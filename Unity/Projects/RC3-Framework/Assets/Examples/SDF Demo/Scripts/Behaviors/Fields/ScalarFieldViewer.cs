@@ -12,6 +12,7 @@ namespace RC3.Unity.SDFDemo
     /// <summary>
     /// 
     /// </summary>
+    [ExecuteInEditMode]
     public class ScalarFieldViewer : MonoBehaviour
     {
         [SerializeField] private ScalarField _source;
@@ -35,7 +36,7 @@ namespace RC3.Unity.SDFDemo
             InitMesh();
 
             if(_center)
-                transform.position -= new Vector3(_countX, _countY, _countZ) * 0.5f;
+                transform.localPosition = new Vector3(_countX, _countY, _countZ) * -0.5f;
         }
 
         
